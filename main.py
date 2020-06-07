@@ -7,8 +7,10 @@ import json
 import os
 import copy
 import numpy as np
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 
 # Cacheインスタンスの作成
@@ -34,6 +36,7 @@ score 出目
 '''
 
 mastercards = [
+## 街コロ
     {'name': '駅', 'type': 0, 'cost':4, 'style': 'ランドマーク', 'pack': 0},
     {'name': 'ショッピングモール', 'type': 0, 'cost':10, 'style': 'ランドマーク', 'pack': 0},
     {'name': '遊園地', 'type': 0, 'cost': 16, 'style': 'ランドマーク', 'pack': 0},
@@ -55,6 +58,37 @@ mastercards = [
     {'name': 'スタジアム', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 2, 'style': 'ランドマーク', 'pack': 0},
     {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0},
     {'name': 'ビジネスセンター', 'type': 1, 'cost': 1, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0},
+## 街コロ＋（プラス）
+    {'name': '役所', 'type': 0, 'cost':0, 'style': 'ランドマーク', 'pack': 1},
+    {'name': '港', 'type': 0, 'cost':2, 'style': 'ランドマーク', 'pack': 1},
+    {'name': '空港', 'type': 0, 'cost': 30, 'style': 'ランドマーク', 'pack': 1},
+
+    {'name': '寿司屋', 'type': 2, 'cost': 1, 'score': '1', 'stock': 6, 'get': 3, 'style': '飲食店', 'pack': 1},
+    {'name': '花畑', 'type': 3, 'cost': 2, 'score': '4', 'stock': 6, 'get': 2, 'style': '農園', 'pack': 1},
+    {'name': 'フラワーショップ', 'type': 1, 'cost': 1, 'score': '6', 'stock': 6, 'get': 1, 'style': '商店', 'pack': 1},
+    {'name': 'ピザ屋', 'type': 2, 'cost': 1, 'score': '7', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 1},
+    {'name': 'バーガーショップ', 'type': 2, 'cost': 1, 'score': '8', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 1},
+    {'name': 'サンマ漁船', 'type': 3, 'cost': 2, 'score': '8', 'stock': 6, 'get': 3, 'style': '漁船', 'pack': 1},
+    {'name': '食品倉庫', 'type': 1, 'cost': 2, 'score': '12-13', 'stock': 6, 'get': 2, 'style': '工場', 'pack': 1},
+    {'name': 'マグロ漁船', 'type': 3, 'cost': 5, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '漁船', 'pack': 1},
+
+    {'name': '出版社', 'type': 1, 'cost': 5, 'score': '7', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 1},
+    {'name': '税務署', 'type': 1, 'cost': 4, 'score': '8-9', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 1},
+## 街コロシャープ
+    {'name': '雑貨屋', 'type': 2, 'cost': 0, 'score': '2', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 2},
+    {'name': 'コーン畑', 'type': 2, 'cost': 2, 'score': '3-4', 'stock': 6, 'get': 1, 'style': '農園', 'pack': 2},
+    {'name': '改装屋', 'type': 2, 'cost': 1, 'score': '4', 'stock': 6, 'get': 8, 'style': '業者', 'pack': 2},
+    {'name': '高級フレンチ', 'type': 2, 'cost': 3, 'score': '5', 'stock': 6, 'get': 5, 'style': '飲食店', 'pack': 2},
+    {'name': '賃金業', 'type': 2, 'cost': 0, 'score': '5-6', 'stock': 6, 'get': 2, 'style': '業者', 'pack': 2},
+    {'name': 'ブドウ園', 'type': 2, 'cost': 3, 'score': '7', 'stock': 6, 'get': 3, 'style': '農園', 'pack': 2},
+    {'name': 'ワイナリー', 'type': 2, 'cost': 3, 'score': '9', 'stock': 6, 'get': 6, 'style': '工場', 'pack': 2},
+    {'name': '引越し屋', 'type': 2, 'cost': 2, 'score': '9-10', 'stock': 6, 'get': 4, 'style': '業者', 'pack': 2},
+    {'name': 'ドリンク工場', 'type': 2, 'cost': 5, 'score': '11', 'stock': 6, 'get': 1, 'style': '工場', 'pack': 2},
+    {'name': '会員制ＢＡＲ', 'type': 2, 'cost': 4, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '飲食店', 'pack': 2},
+
+    {'name': '清掃業', 'type': 1, 'cost': 4, 'score': '8', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 2},
+    {'name': 'ＩＴベンチャー', 'type': 1, 'cost': 1, 'score': '10', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 2},
+    {'name': '公園', 'type': 1, 'cost': 3, 'score': '11-13', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 2},
 ]
 
 
@@ -400,7 +434,6 @@ def judgement_dice(gameid, dice):
 def next_player(gameid):
     game = cache.get(gameid)
 
-    # game['routeidx'] = (game['routeidx'] + 1) % len(game['players'])
     game['players'] = np.roll(np.array(game['players']), -1).tolist()
 
     cache.set(gameid, game)

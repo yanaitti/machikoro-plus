@@ -2,8 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CODE NAME(コードネーム) ONLINE</title>
+    <title>街コロ / 街コロ＋(プラス) ONLINE</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Bootstrap -->
+<!--
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+-->
   </head>
   <body>
     <div id='app2'>
@@ -23,32 +29,41 @@
       <br/>
       <div id='sec1' style='display:none'>
         <hr/>
-        <button id="startGame">ゲームを始める(Let's start the Game)</button><br/>
+        <button id="startGame1">街コロ&lt;通常ルールを始める&gt;</button>&nbsp;&nbsp;
+        <button id="startGame2">街コロ&lt;拡張ルールを始める&gt;</button><br/>
+        <button id="startGame3">街コロ＋(プラス)&lt;通常ルールを始める&gt;</button>&nbsp;&nbsp;
+        <button id="startGame4">街コロ＋(プラス)&lt;拡張ルールを始める&gt;</button><br/>
       </div>
       <div id='sec2' style='display:none'>
         <h2>Your role</h2>
-        <input type='radio' name='role' id='role' value='0'/><font color='#ff6666'>◆</font>A回答者<br/>
-        <input type='radio' name='role' id='role' value='1'/><font color='#6699ff'>■</font>B回答者<br/>
-        <input type='radio' name='role' id='role' value='2'/><font color='#ff6666'>◆</font>Aスパイマスター<br/>
-        <input type='radio' name='role' id='role' value='3'/><font color='#6699ff'>■</font>Bスパイマスター<br/>
-        <button id="setteam">選択する(set the team)</button><br/>
+        <span id='routelist'></span>
+        <hr/>
+        <table id='gameboard' board=1>
+        </table>
+        <hr/>
+        <table id='playercards' board=1>
+        </table>
         <hr/>
       </div>
       <div id='sec3' style='display:none'>
-        Your Team turn: <span id='turn'></span><br/>
-        <span id='gameover'></span>
-        <hr/>
-        Game Board:<br/>
-        <table id='gameboard' board=1>
-        </table>
-        <br/>
+        <input name='choice_dice' id="choice_dice" value='1'>1個</input>&nbsp;&nbsp;
+        <input name='choice_dice' id="choice_dice" value='2' disabled=true>2個</input><br/>
+        <button id="roll_dice">ダイスを振る</button><br/>
+        <button id="judgement">判定をする</button><br/>
+        <button id="next_player">次の人へ</button><br/>
         <hr/>
       </div>
       <div id='sec4' style='display:none'>
-        <select name='card_sel' id="card_sel"></select><br/>
-        <button id="setCard">回答する(set the card)</button><br/>
-        <br/>
-        <button id="nextTeam">次のTeamへ(Go on Next team)</button><br/>
+        カード指定<br/>
+        <select name='sel_card' id="sel_card"></select><br/>
+        プレイヤー指定<br/>
+        <select name='sel_player' id="sel_player"></select><br/>
+        <button id="trade_card">カードを交換する</button><br/>
+      </div>
+      <div id='sec5' style='display:none'>
+        プレイヤー指定<br/>
+        <select name='sel_player' id="sel_player"></select><br/>
+        <button id="get_point">ポイントをもらう</button><br/>
       </div>
       <br/>
       <span id='message'></span><br/>
@@ -107,10 +122,10 @@
         });
       });
 
-      // Start Game
-      $('#startGame').click(function() {
+      // 街コロ<通常ルール>
+      $('#startGame1').click(function() {
         $('#message').empty();
-        $.ajax(gId + '/start',
+        $.ajax(gId + '/start/0',
           {
             type: 'get',
           }
@@ -122,44 +137,89 @@
         });
       });
 
-      // set the team
-      $('#setteam').click(function() {
+      // 街コロ<拡張ルール>
+      $('#startGame2').click(function() {
         $('#message').empty();
-        // put your card
-        $.ajax(gId + '/' + cId + '/set/' + $('input[name="role"]:checked').val(),
+        $.ajax(gId + '/start/0/ext',
           {
             type: 'get',
           }
         )
         .done(function(data) {
-          $('input[type="radio"]').prop("disabled", true);
-          $('#setteam').prop("disabled", true);
-          $('#sec3').show();
         })
         .fail(function() {
           $('#message').text('エラーが発生しました');
         });
       });
 
-      // Put your card
-      $('#setCard').click(function() {
+      // 街コロ＋<通常ルール>
+      $('#startGame3').click(function() {
         $('#message').empty();
-        // put your card
-        $.ajax(gId + '/set/' + $('input[name="role"]:checked').val() + '/' + $('#card_sel').val(),
+        $.ajax(gId + '/start/1',
           {
             type: 'get',
           }
         )
         .done(function(data) {
-          $('#message').text(data);
         })
         .fail(function() {
           $('#message').text('エラーが発生しました');
         });
       });
+
+      // 街コロ＋<拡張ルール>
+      $('#startGame4').click(function() {
+        $('#message').empty();
+        $.ajax(gId + '/start/1/ext',
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // // set the team
+      // $('#setteam').click(function() {
+      //   $('#message').empty();
+      //   // put your card
+      //   $.ajax(gId + '/' + cId + '/set/' + $('input[name="role"]:checked').val(),
+      //     {
+      //       type: 'get',
+      //     }
+      //   )
+      //   .done(function(data) {
+      //     $('input[type="radio"]').prop("disabled", true);
+      //     $('#setteam').prop("disabled", true);
+      //     $('#sec3').show();
+      //   })
+      //   .fail(function() {
+      //     $('#message').text('エラーが発生しました');
+      //   });
+      // });
+      //
+      // // Put your card
+      // $('#setCard').click(function() {
+      //   $('#message').empty();
+      //   // put your card
+      //   $.ajax(gId + '/set/' + $('input[name="role"]:checked').val() + '/' + $('#card_sel').val(),
+      //     {
+      //       type: 'get',
+      //     }
+      //   )
+      //   .done(function(data) {
+      //     $('#message').text(data);
+      //   })
+      //   .fail(function() {
+      //     $('#message').text('エラーが発生しました');
+      //   });
+      // });
 
       // Next player
-      $('#nextTeam').click(function() {
+      $('#next_player').click(function() {
         $('#message').empty();
         $.ajax(gId + '/next',
           {
