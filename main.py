@@ -34,27 +34,27 @@ score 出目
 '''
 
 mastercards = [
-    {'name': '駅', 'type': 0, 'cost':4, 'style': 'ランドマーク'},
-    {'name': 'ショッピングモール', 'type': 0, 'cost':10, 'style': 'ランドマーク'},
-    {'name': '遊園地', 'type': 0, 'cost': 16, 'style': 'ランドマーク'},
-    {'name': '電波塔', 'type': 0, 'cost': 22, 'style': 'ランドマーク'},
+    {'name': '駅', 'type': 0, 'cost':4, 'style': 'ランドマーク', 'pack': 0},
+    {'name': 'ショッピングモール', 'type': 0, 'cost':10, 'style': 'ランドマーク', 'pack': 0},
+    {'name': '遊園地', 'type': 0, 'cost': 16, 'style': 'ランドマーク', 'pack': 0},
+    {'name': '電波塔', 'type': 0, 'cost': 22, 'style': 'ランドマーク', 'pack': 0},
 
-    {'name': '麦畑', 'type': 3, 'cost': 1, 'score': '1', 'stock': 6, 'get': 1, 'style': '農園'},
-    {'name': '牧場', 'type': 3, 'cost': 1, 'score': '2', 'stock': 6, 'get': 1, 'style': '牧場'},
-    {'name': 'パン屋', 'type': 1, 'cost': 1, 'score': '2-3', 'stock': 6, 'get': 1, 'style': '商店'},
-    {'name': 'カフェ', 'type': 2, 'cost': 2, 'score': '3', 'stock': 6, 'get': 1, 'style': '飲食店'},
-    {'name': 'コンビニ', 'type': 1, 'cost': 2, 'score': '4', 'stock': 6, 'get': 3, 'style': '商店'},
-    {'name': '森林', 'type': 3, 'cost': 3, 'score': '5', 'stock': 6, 'get': 1, 'style': '自然'},
-    {'name': 'チーズ工場', 'type': 1, 'cost': 5, 'score': '7', 'stock': 6, 'get': 3, 'style': '工場'},
-    {'name': '家具工場', 'type': 1, 'cost': 3, 'score': '8', 'stock': 6, 'get': 3, 'style': '工場'},
-    {'name': '鉱山', 'type': 3, 'cost': 6, 'score': '9', 'stock': 6, 'get': 5, 'style': '自然'},
-    {'name': 'ファミレス', 'type': 2, 'cost': 3, 'score': '9-10', 'stock': 6, 'get': 2, 'style': '飲食店'},
-    {'name': 'リンゴ園', 'type': 3, 'cost': 3, 'score': '10', 'stock': 6, 'get': 3, 'style': '農園'},
-    {'name': '青果市場', 'type': 1, 'cost': 2, 'score': '11-12', 'stock': 6, 'get': 2, 'style': '市場'},
+    {'name': '麦畑', 'type': 3, 'cost': 1, 'score': '1', 'stock': 6, 'get': 1, 'style': '農園', 'pack': 0},
+    {'name': '牧場', 'type': 3, 'cost': 1, 'score': '2', 'stock': 6, 'get': 1, 'style': '牧場', 'pack': 0},
+    {'name': 'パン屋', 'type': 1, 'cost': 1, 'score': '2-3', 'stock': 6, 'get': 1, 'style': '商店', 'pack': 0},
+    {'name': 'カフェ', 'type': 2, 'cost': 2, 'score': '3', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 0},
+    {'name': 'コンビニ', 'type': 1, 'cost': 2, 'score': '4', 'stock': 6, 'get': 3, 'style': '商店', 'pack': 0},
+    {'name': '森林', 'type': 3, 'cost': 3, 'score': '5', 'stock': 6, 'get': 1, 'style': '自然', 'pack': 0},
+    {'name': 'チーズ工場', 'type': 1, 'cost': 5, 'score': '7', 'stock': 6, 'get': 3, 'style': '工場', 'pack': 0},
+    {'name': '家具工場', 'type': 1, 'cost': 3, 'score': '8', 'stock': 6, 'get': 3, 'style': '工場', 'pack': 0},
+    {'name': '鉱山', 'type': 3, 'cost': 6, 'score': '9', 'stock': 6, 'get': 5, 'style': '自然', 'pack': 0},
+    {'name': 'ファミレス', 'type': 2, 'cost': 3, 'score': '9-10', 'stock': 6, 'get': 2, 'style': '飲食店', 'pack': 0},
+    {'name': 'リンゴ園', 'type': 3, 'cost': 3, 'score': '10', 'stock': 6, 'get': 3, 'style': '農園', 'pack': 0},
+    {'name': '青果市場', 'type': 1, 'cost': 2, 'score': '11-12', 'stock': 6, 'get': 2, 'style': '市場', 'pack': 0},
 
-    {'name': 'スタジアム', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 2, 'style': 'ランドマーク'},
-    {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク'},
-    {'name': 'ビジネスセンター', 'type': 1, 'cost': 1, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク'},
+    {'name': 'スタジアム', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 2, 'style': 'ランドマーク', 'pack': 0},
+    {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0},
+    {'name': 'ビジネスセンター', 'type': 1, 'cost': 1, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0},
 ]
 
 
@@ -119,9 +119,9 @@ def join_game(gameid, nickname='default'):
 
 
 # start the game
-@app.route('/<gameid>/start')
-@app.route('/<gameid>/start/<ext>')
-def start_game(gameid, ext=''):
+@app.route('/<gameid>/start/<int:pack>')
+@app.route('/<gameid>/start/<int:pack>/<ext>')
+def start_game(gameid, pack, ext=''):
     game = cache.get(gameid)
     app.logger.debug(gameid)
     app.logger.debug(game)
@@ -132,8 +132,9 @@ def start_game(gameid, ext=''):
     stocks = []
     boardcards = []
 
+    _mastercards = [_mastercard for _mastercard in mastercards if _mastercard['pack'] <= pack]
     if game['ext'] == 'ext':
-        for mastercard in mastercards:
+        for mastercard in _mastercards:
             app.logger.debug(mastercard)
             if mastercard['type'] > 0:
                 boardcards.append({'name': mastercard['name'], 'cnt': 0, 'cost': mastercard['cost']})
@@ -143,12 +144,12 @@ def start_game(gameid, ext=''):
 
         random.shuffle(stocks)
 
-        while len([boardcard for boardcard in boardcards if boardcard['cnt'] > 0]) < 10 and len(stocks) > 0:
+        while len([_boardcard for _boardcard in boardcards if _boardcard['cnt'] > 0]) < 10 and len(stocks) > 0:
             mastercard = stocks.pop(0)
-            boardcard = [boardcard for boardcard in boardcards if boardcard['name'] == mastercard['name']][0]
+            boardcard = [_boardcard for _boardcard in boardcards if _boardcard['name'] == mastercard['name']][0]
             boardcard['cnt'] += 1
     else:
-        for mastercard in mastercards:
+        for mastercard in _mastercards:
             app.logger.debug(mastercard)
             if mastercard['type'] > 0:
                 boardcards.append({'name': mastercard['name'], 'cnt': mastercard['stock'], 'cost': mastercard['cost']})
@@ -159,16 +160,17 @@ def start_game(gameid, ext=''):
         player['facilities'] = []
         player['landmarks'] = []
 
-        player['facilities'].append(mastercards[4])
-        player['facilities'].append(mastercards[5])
+        player['facilities'].append(_mastercards[4])
+        player['facilities'].append(_mastercards[5])
         player['coins'] = 3
 
-        for mastercard in mastercards:
+        for mastercard in _mastercards:
             if mastercard['type'] == 0:
                 landmark = copy.deepcopy(mastercard)
                 landmark['turn'] = False
                 player['landmarks'].append(landmark)
 
+    game['mastercards'] = _mastercards
     game['stocks'] = stocks
     game['boardcards'] = boardcards
 
@@ -180,9 +182,11 @@ def start_game(gameid, ext=''):
 @app.route('/<gameid>/<playerid>/buy/facility/<int:facilityid>')
 def buy_card(gameid, playerid, facilityid):
     game = cache.get(gameid)
-    player = [player for player in game['players'] if player['playerid'] == playerid][0]
+
+    _mastercards = game['mastercards']
+    player = [_player for _player in game['players'] if _player['playerid'] == playerid][0]
     boardcard = game['boardcards'][facilityid]
-    mastercard = [mastercard for mastercard in mastercards if mastercard['name'] == boardcard['name']][0]
+    mastercard = [_mastercard for _mastercard in _mastercards if _mastercard['name'] == boardcard['name']][0]
 
     if player['coins'] < boardcard['cost']:
         return 'ng cost'
@@ -197,9 +201,9 @@ def buy_card(gameid, playerid, facilityid):
     stocks = game['stocks']
     boardcards = game['boardcards']
 
-    while len([boardcard for boardcard in boardcards if boardcard['cnt'] > 0]) < 10 and len(stocks) > 0:
+    while len([_boardcard for _boardcard in boardcards if _boardcard['cnt'] > 0]) < 10 and len(stocks) > 0:
         mastercard = stocks.pop(0)
-        boardcard = [boardcard for boardcard in boardcards if boardcard['name'] == mastercard['name']][0]
+        boardcard = [_boardcard for _boardcard in boardcards if _boardcard['name'] == mastercard['name']][0]
         boardcard['cnt'] += 1
 
     game['boardcards'] = boardcards
@@ -213,7 +217,7 @@ def buy_card(gameid, playerid, facilityid):
 @app.route('/<gameid>/<playerid>/buy/landmark/<int:landmarkid>')
 def buy_landmark(gameid, playerid, landmarkid):
     game = cache.get(gameid)
-    player = [player for player in game['players'] if player['playerid'] == playerid][0]
+    player = [_player for _player in game['players'] if _player['playerid'] == playerid][0]
     landmark = player['landmarks'][landmarkid]
 
     if player['coins'] < landmark['cost']:
@@ -247,6 +251,43 @@ def dice_roll(gameid, rollcnt):
     return str(dice)
 
 
+# trade the card
+@app.route('/<gameid>/<playerid>/trade/<toplayerid>/<int:cardnum>/<int:tocardnum>')
+def trade_card(gameid, playerid, toplayerid, cardnum, tocardnum):
+    game = cache.get(gameid)
+
+    player = [_player for _player in game['players'] if _player['playerid'] == playerid][0]
+    facility = player['facilities'].pop(cardnum)
+
+    toplayer = [_player for _player in game['players'] if _player['playerid'] == toplayerid][0]
+    tofacility = toplayer['facilities'].pop(tocardnum)
+
+    player['facilities'].append(tofacility)
+    toplayer['facilities'].append(facility)
+
+    cache.set(gameid, game)
+    return 'ok'
+
+
+# choice the player
+@app.route('/<gameid>/<playerid>/choice/<fromplayerid>')
+def choice_player(gameid, playerid, fromplayerid):
+    game = cache.get(gameid)
+
+    player = [_player for _player in game['players'] if _player['playerid'] == playerid][0]
+    fromplayer = [_player for _player in game['players'] if _player['playerid'] == fromplayerid][0]
+
+    if fromplayer['coins'] > 5:
+        player['coins'] += 5
+        fromplayer['coins'] -= 5
+    else:
+        player['coins'] += fromplayer['coins']
+        fromplayer['coins'] = 0
+
+    cache.set(gameid, game)
+    return 'ok'
+
+
 # judgement for dice
 @app.route('/<gameid>/judgement/<int:dice>')
 def judgement_dice(gameid, dice):
@@ -263,11 +304,11 @@ def judgement_dice(gameid, dice):
     for pIdx, _player in enumerate(game['players']):
         coins = 0
         if _player['playerid'] != player['playerid']:
-            yourselfcards = [card for card in _player['facilities'] if card['type'] == 2]
+            yourselfcards = [_card for _card in _player['facilities'] if _card['type'] == 2]
             for card in yourselfcards:
                 getcoin = card['get'] + 1 if _player['landmarks'][1]['turn'] == True and card['style'] in ['飲食店', '商店'] else card['get']
                 diff = 0
-                scores = [int(score) for score in card['score'].split('-')]
+                scores = [int(_score) for _score in card['score'].split('-')]
                 if len(scores) == 1:
                     if scores[0] == dice:
                         diff = getcoin if player['coins'] > getcoin else player['coins']
@@ -283,12 +324,12 @@ def judgement_dice(gameid, dice):
 
     # 自分のターン
     coins = 0
-    myselfcards = [card for card in player['facilities'] if card['type'] == 1]
+    myselfcards = [_card for _card in player['facilities'] if _card['type'] == 1]
     for card in myselfcards:
         # getcoin = card['get']
         getcoin = card['get'] + 1 if player['landmarks'][1]['turn'] == True and card['style'] in ['飲食店', '商店'] else card['get']
         diff = 0
-        scores = [int(score) for score in card['score'].split('-')]
+        scores = [int(_score) for _score in card['score'].split('-')]
         if len(scores) == 1:
             if scores[0] == dice:
                 diff = getcoin
@@ -297,13 +338,13 @@ def judgement_dice(gameid, dice):
                 diff = getcoin
 
         if card['name'] == 'チーズ工場':
-            diff *= len([card for card in player['facilities'] if card['style'] == '牧場'])
+            diff *= len([_card for _card in player['facilities'] if _card['style'] == '牧場'])
             player['coins'] += diff
         elif card['name'] == '家具工場':
-            diff *= len([card for card in player['facilities'] if card['style'] == '自然'])
+            diff *= len([_card for _card in player['facilities'] if _card['style'] == '自然'])
             player['coins'] += diff
         elif card['name'] == '青果市場':
-            diff *= len([card for card in player['facilities'] if card['style'] == '農園'])
+            diff *= len([_card for _card in player['facilities'] if _card['style'] == '農園'])
             player['coins'] += diff
         elif card['name'] == 'スタジアム':
             # 効果：（自分のターン）全員から２コインもらう
@@ -333,10 +374,10 @@ def judgement_dice(gameid, dice):
     # 誰のターンでも
     for pIdx, _player in enumerate(game['players']):
         coins = 0
-        anyonecards = [card for card in _player['facilities'] if card['type'] == 3]
+        anyonecards = [_card for _card in _player['facilities'] if _card['type'] == 3]
         for card in anyonecards:
             diff = 0
-            scores = [int(score) for score in card['score'].split('-')]
+            scores = [int(_score) for _score in card['score'].split('-')]
             if len(scores) == 1:
                 if scores[0] == dice:
                     diff = card['get']

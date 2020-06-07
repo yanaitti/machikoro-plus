@@ -21,11 +21,11 @@ class MainTestCase(unittest.TestCase):
     def join_game_w_name(self, gameid, nickname):
         return self.app.get(gameid + '/join/' + nickname, follow_redirects=True)
 
-    def start_game(self, gameid, ext):
+    def start_game(self, gameid, pack, ext):
         if ext != '':
-            return self.app.get(gameid + '/start/ext', follow_redirects=True)
+            return self.app.get(gameid + '/start/' + str(pack) + '/ext', follow_redirects=True)
         else:
-            return self.app.get(gameid + '/start', follow_redirects=True)
+            return self.app.get(gameid + '/start/' + str(pack), follow_redirects=True)
 
     def status_game(self, gameid):
         return self.app.get(gameid + '/status', follow_redirects=True)
@@ -41,6 +41,12 @@ class MainTestCase(unittest.TestCase):
 
     def buying_facility(self, gameid, playerid, facilityid):
         return self.app.get(gameid + '/' + playerid + '/buy/facility/' + str(facilityid), follow_redirects=True)
+
+    def trade_card(self, gameid, playerid, toplayerid, facilityid, tofacilityid):
+        return self.app.get(gameid + '/' + playerid + '/trade/' + toplayerid + '/' + str(facilityid) + '/' + str(tofacilityid), follow_redirects=True)
+
+    def choice_player(self, gameid, playerid, fromplayerid):
+        return self.app.get(gameid + '/' + playerid + '/choice/' + fromplayerid, follow_redirects=True)
 
     def next_game(self, gameid):
         return self.app.get(gameid + '/next', follow_redirects=True)
@@ -92,7 +98,7 @@ class MainTestCase(unittest.TestCase):
         # Start Game
         print('#####################################')
 
-        rv = self.start_game(gameid, '')
+        rv = self.start_game(gameid, 0, '')
         assert b'ok' in rv.get_data()
 
         ###########################################################
@@ -109,7 +115,7 @@ class MainTestCase(unittest.TestCase):
         # Start Game
         print('#####################################')
 
-        rv = self.start_game(gameid, 'ext')
+        rv = self.start_game(gameid, 0, 'ext')
         assert b'ok' in rv.get_data()
 
         ###########################################################
@@ -898,6 +904,56 @@ class MainTestCase(unittest.TestCase):
 
         rv = self.status_game(gameid)
         game_status = json.loads(rv.get_data())
+
+        # ####################################################
+        self.trun_status(game_status, 21)
+        # ####################################################
+
+        ###########################################################
+        player = game_status['players'][0]
+        toplayer = game_status['players'][1]
+        fromplayer = game_status['players'][2]
+
+        print('@@------ before')
+        print('@@-- player')
+        for _facility in player['facilities']:
+            print(_facility['name'])
+
+        print('@@-- toplayer')
+        for _facility in toplayer['facilities']:
+            print(_facility['name'])
+
+        print('@@-- player coins')
+        for _player in game_status['players']:
+            print(_player['coins'])
+
+        # 特殊テスト（施設の交換）
+        rv = self.trade_card(gameid, player['playerid'], toplayer['playerid'], 4, 2)
+        assert b'ok' in rv.get_data()
+
+        # 特殊テスト（ポイントの搾取）
+        rv = self.choice_player(gameid, player['playerid'], fromplayer['playerid'])
+        assert b'ok' in rv.get_data()
+
+        rv = self.status_game(gameid)
+        game_status = json.loads(rv.get_data())
+
+        player = game_status['players'][0]
+        toplayer = game_status['players'][1]
+        fromplayer = game_status['players'][2]
+
+        print('@@------ after')
+        print('@@-- player')
+        for _facility in player['facilities']:
+            print(_facility['name'])
+
+        print('@@-- toplayer')
+        for _facility in toplayer['facilities']:
+            print(_facility['name'])
+
+        print('@@-- player coins')
+        for _player in game_status['players']:
+            print(_player['coins'])
 
 
 if __name__ == '__main__':
