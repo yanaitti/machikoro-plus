@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CODE NAME(コードネーム) ONLINE</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id='app2'>
+      <input id="cName_inp" placeholder="ニックネームを入力してください"><br/>
+      <br/>
+      <button id='createGame'>ゲームを作る(Make a Game)</button><br/>
+      Game ID: <span id='gId'></span><br/>
+      Game Status: <span id='gStatus'></span><br/>
+      <hr/>
+      <button id="joinGame">ゲームに参加する(Join the Game)</button><br/>
+      <input id="gId_inp" placeholder="GameIDを入力してください"><br/>
+      Your ID: <span id='cId'></span><br/>
+      Your Name: <span id='cName'></span><br/>
+      <hr/>
+      <h2>Member Applying</h2>
+      <span id='applyingList'></span>
+      <br/>
+      <div id='sec1' style='display:none'>
+        <hr/>
+        <button id="startGame">ゲームを始める(Let's start the Game)</button><br/>
+      </div>
+      <div id='sec2' style='display:none'>
+        <h2>Your role</h2>
+        <input type='radio' name='role' id='role' value='0'/><font color='#ff6666'>◆</font>A回答者<br/>
+        <input type='radio' name='role' id='role' value='1'/><font color='#6699ff'>■</font>B回答者<br/>
+        <input type='radio' name='role' id='role' value='2'/><font color='#ff6666'>◆</font>Aスパイマスター<br/>
+        <input type='radio' name='role' id='role' value='3'/><font color='#6699ff'>■</font>Bスパイマスター<br/>
+        <button id="setteam">選択する(set the team)</button><br/>
+        <hr/>
+      </div>
+      <div id='sec3' style='display:none'>
+        Your Team turn: <span id='turn'></span><br/>
+        <span id='gameover'></span>
+        <hr/>
+        Game Board:<br/>
+        <table id='gameboard' board=1>
+        </table>
+        <br/>
+        <hr/>
+      </div>
+      <div id='sec4' style='display:none'>
+        <select name='card_sel' id="card_sel"></select><br/>
+        <button id="setCard">回答する(set the card)</button><br/>
+        <br/>
+        <button id="nextTeam">次のTeamへ(Go on Next team)</button><br/>
+      </div>
+      <br/>
+      <span id='message'></span><br/>
+    </div>
+
+    <script>
+    var timeout = 1000;
+    var timer = '';
+
+    $(function() {
+      var gId = '';
+      var cId = '';
+
+      // Create Game
+      $('#createGame').click(function() {
+        $('#message').empty();
+        $.ajax('create' + '/' + $('#cName_inp').val(),
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+          $('#gId').text(data);
+          $('#cId').text(data);
+          $('#cName').text($('#cName_inp').val());
+          $('#gStatus').text('waiting');
+          gId = data;
+          cId = data;
+          $('#sec1').show();
+          timer = setTimeout(status_check(gId, cId), timeout)
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // Join Game
+      $('#joinGame').click(function() {
+        $('#message').empty();
+        $.ajax($('#gId_inp').val() + '/join/' + $('#cName_inp').val(),
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+          _tmp = data.split(' ,');
+          $('#cId').text(_tmp[0]);
+          $('#cName').text(_tmp[1]);
+          $('#gStatus').text(_tmp[2]);
+          gId = $('#gId_inp').val();
+          cId = _tmp[0];
+          timer = setTimeout(status_check(gId, cId), timeout)
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // Start Game
+      $('#startGame').click(function() {
+        $('#message').empty();
+        $.ajax(gId + '/start',
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // set the team
+      $('#setteam').click(function() {
+        $('#message').empty();
+        // put your card
+        $.ajax(gId + '/' + cId + '/set/' + $('input[name="role"]:checked').val(),
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+          $('input[type="radio"]').prop("disabled", true);
+          $('#setteam').prop("disabled", true);
+          $('#sec3').show();
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // Put your card
+      $('#setCard').click(function() {
+        $('#message').empty();
+        // put your card
+        $.ajax(gId + '/set/' + $('input[name="role"]:checked').val() + '/' + $('#card_sel').val(),
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+          $('#message').text(data);
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // Next player
+      $('#nextTeam').click(function() {
+        $('#message').empty();
+        $.ajax(gId + '/next',
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+          // console.log(data)
+          $('#message').text('次に移動しました');
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+    });
+
+    var status_check = function(gId, cId){
+      setTimeout(function(){
+        $('#message').empty();
+        // all status
+        $.getJSON(gId + '/status',
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+          console.log(data)
+          $('#gStatus').text(data.status);
+          playerPos = 0;
+          teamid = 0;
+
+          // Applying List
+          $('#applyingList').empty();
+          for(var pIdx in data.players){
+            // console.log(data.players[pIdx])
+            $('#applyingList').append(data.players[pIdx].nickname + '(' + data.players[pIdx].playerid + ')' + ',');
+            if(cId == data.players[pIdx].playerid){
+              playerPos = pIdx;
+            }
+          }
+
+          switch(data.status){
+            case 'started':
+              $('#sec2').show();
+              $('#gameover').empty();
+
+              if(data.answers.length != $('#card_sel').children('option').length){
+                $('#card_sel').children().remove();
+                for(var pIdx in data.answers){
+                  $('#card_sel').append('<option value="'+data.answers[pIdx]+'">'+data.answers[pIdx]+'</option>');
+                }
+              }
+
+              // checking turn
+              teamid = data.players[playerPos].teamid;
+              console.log("teamid:" + teamid + "turn:" + data.turn)
+              if(teamid % 2 == data.turn){
+                $('#turn').text('your turn')
+                if(teamid < 2){
+                  $('#sec4').show();
+                }
+              }else{
+                $('#turn').text('not your turn')
+                $('#sec4').css('display', 'none');
+              }
+
+              // game board
+              $('#gameboard tr').remove();
+              if(teamid < 9){
+                var idx = 0;
+                for(var r = 0; r < 5; r++){
+                  var rowtable = $('<tr></tr>').appendTo($('#gameboard'));
+                  for(var c = 0; c < 5; c++){
+                    if(teamid > 1 || data.board[idx].type > 3){
+                      switch(data.board[idx].type){
+                        case 0:
+                          $('<td bgcolor="#ff6666">' + data.board[idx].codename + '</td>').appendTo(rowtable);
+                          break;
+                        case 1:
+                          $('<td bgcolor="#6699ff">' + data.board[idx].codename + '</td>').appendTo(rowtable);
+                          break;
+                        case 2:
+                          $('<td bgcolor="#ddd">' + data.board[idx].codename + '</td>').appendTo(rowtable);
+                          break;
+                        case 10:
+                          $('<td bgcolor="#ff6666"><font color="#ff6666">' + data.board[idx].codename + '</font></td>').appendTo(rowtable);
+                          break;
+                        case 11:
+                          $('<td bgcolor="#6699ff"><font color="#6699ff">' + data.board[idx].codename + '</font></td>').appendTo(rowtable);
+                          break;
+                        case 12:
+                          $('<td bgcolor="#ddd"><font color="#ddd">' + data.board[idx].codename + '</font></td>').appendTo(rowtable);
+                          break;
+                        case 13:
+                          $('<td><font color="#fff">' + data.board[idx].codename + '</font></td>').appendTo(rowtable);
+                          break;
+                        default:
+                          $('<td>' + data.board[idx].codename + '</td>').appendTo(rowtable);
+                          break;
+                      }
+                    }else{
+                      $('<td>' + data.board[idx].codename + '</td>').appendTo(rowtable);
+                    }
+                    idx++;
+                  }
+                }
+              }
+              break;
+            case 'end':
+              $('#gameover').text('Game Over');
+              $('input[type="radio"]').prop("disabled", false);
+              $('#setteam').prop("disabled", false);
+              $('#sec4').css('display', 'none');
+              $('#card_sel').children().remove();
+              break;
+          }
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+        timer = setTimeout(status_check(gId, cId), timeout)
+      }, timeout);
+    }
+
+    </script>
+  </body>
+</html>
