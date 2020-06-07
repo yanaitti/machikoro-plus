@@ -287,7 +287,7 @@ def dice_roll(gameid, rollcnt):
     game['dice'] = dice
 
     cache.set(gameid, game)
-    return str(dice)
+    return json.dumps(dice)
 
 
 # trade the card

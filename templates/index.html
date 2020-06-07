@@ -35,24 +35,39 @@
         <button id="startGame4">街コロ＋(プラス)&lt;拡張ルールを始める&gt;</button><br/>
       </div>
       <div id='sec2' style='display:none'>
-        <h2>Your role</h2>
+        <h4>Your role</h4>
         <span id='routelist'></span>
         <hr/>
-        <table id='gameboard' board=1>
+        <h4>Board Information</h4>
+        <table id='boardcards' board=1>
         </table>
         <hr/>
-        <table id='playercards' board=1>
+        <h4>Your Information</h4>
+        ランドマーク:<br/>
+        <table id='landmarks' board=1>
+        </table>
+        <br/>
+        施設:<br/>
+        <table id='facilities' board=1>
         </table>
         <hr/>
       </div>
       <div id='sec3' style='display:none'>
-        <input type='radio' name='choice_dice' id="choice_dice" value='1'>1個</input>&nbsp;&nbsp;
-        <input type='radio' name='choice_dice' id="choice_dice" value='2' disabled=true>2個</input><br/>
+        &lt;&lt;ダイスフェーズ&gt;&gt;<br/>
+        <input type='radio' name='choice_dice' id="choice_dice" value='1' checked=true>1個</input>&nbsp;&nbsp;
+        <input type='radio' name='choice_dice' id="choice_dice" value='2' disabled="disabled">2個</input><br/>
+        <input type='hidden' id='hide_dice' value='0'/>
         <button id="roll_dice">ダイスを振る</button><br/>
         <br/>
         <span id='dice'></span><br/>
         <br/>
         <button id="judgement">判定をする</button><br/>
+        <br/>
+        &lt;&lt;購入フェーズ&gt;&gt;<br/>
+        <select name='sel_buy' id="sel_buy"></select><br/>
+        <button id="buying">購入する</button><br/>
+        <br/>
+        &lt;&lt;終了フェーズ&gt;&gt;<br/>
         <button id="next_player">次の人へ</button><br/>
         <hr/>
       </div>
@@ -186,46 +201,29 @@
         });
       });
 
-      // // set the team
-      // $('#setteam').click(function() {
-      //   $('#message').empty();
-      //   // put your card
-      //   $.ajax(gId + '/' + cId + '/set/' + $('input[name="role"]:checked').val(),
-      //     {
-      //       type: 'get',
-      //     }
-      //   )
-      //   .done(function(data) {
-      //     $('input[type="radio"]').prop("disabled", true);
-      //     $('#setteam').prop("disabled", true);
-      //     $('#sec3').show();
-      //   })
-      //   .fail(function() {
-      //     $('#message').text('エラーが発生しました');
-      //   });
-      // });
-      //
-      // // Put your card
-      // $('#setCard').click(function() {
-      //   $('#message').empty();
-      //   // put your card
-      //   $.ajax(gId + '/set/' + $('input[name="role"]:checked').val() + '/' + $('#card_sel').val(),
-      //     {
-      //       type: 'get',
-      //     }
-      //   )
-      //   .done(function(data) {
-      //     $('#message').text(data);
-      //   })
-      //   .fail(function() {
-      //     $('#message').text('エラーが発生しました');
-      //   });
-      // });
-
       // roll the dice
       $('#roll_dice').click(function() {
         $('#message').empty();
-        $.ajax(gId + '/roll/' + $('input[name="choice_dice"]:checked').val(),
+        $.getJSON(gId + '/roll/' + $('input[name="choice_dice"]:checked').val(),
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+          $('#hide_dice').val('0');
+          for(dIdx in data){
+            $('#hide_dice').val(Number($('#hide_dice').val()) + Number(data[dIdx]));
+          }
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // judgement
+      $('#judgement').click(function() {
+        $('#message').empty();
+        $.ajax(gId + '/judgement/' + $('#hide_dice').val(),
           {
             type: 'get',
           }
@@ -282,9 +280,38 @@
 
           switch(data.status){
             case 'started':
+              $('#sec2').show();
               $('#sec3').show();
               $('#sec4').show();
-              // $('#gameover').empty();
+
+              $('#boardcards').empty();
+              // var rowtable = $('<tr></tr>').appendTo($('#boardcards'));
+              var gCnt = 0;
+              for(var gIdx in data.boardcards){
+                if(gCnt % 5 == 0){
+                  var rowtable = $('<tr></tr>').appendTo($('#boardcards'));
+                }
+                if(data.boardcards[gIdx].cnt > 0){
+                  $('<td align="center">' + data.boardcards[gIdx].name + '<br/>&lt;' + data.boardcards[gIdx].cnt + '&gt;</td>').appendTo(rowtable);
+                  gCnt++;
+                }
+              }
+
+              $('#landmarks').empty();
+              var rowtable = $('<tr></tr>').appendTo($('#landmarks'));
+              for(var pIdx in data.players[playerPos].landmarks){
+                landmark = data.players[playerPos].landmarks[pIdx]
+                $('<td align="center">' + landmark.name + '<br/>&lt;' + (data.turn? '建設済み':'工事中') + '&gt;</td>').appendTo(rowtable);
+              }
+
+              $('#facilities').empty();
+              for(var fIdx in data.players[playerPos].facilities){
+                if(fIdx % 5 == 0){
+                  var rowtable = $('<tr></tr>').appendTo($('#facilities'));
+                }
+                facility = data.players[playerPos].facilities[fIdx]
+                $('<td align="center">' + facility.name + '</td>').appendTo(rowtable);
+              }
 
               $('#dice').text(data.dice.join(','));
               if(data.players[playerPos].dices == 2){
@@ -316,7 +343,6 @@
               // // game board
               // $('#gameboard tr').remove();
               // if(teamid < 9){
-              //   var idx = 0;
               //   for(var r = 0; r < 5; r++){
               //     var rowtable = $('<tr></tr>').appendTo($('#gameboard'));
               //     for(var c = 0; c < 5; c++){
@@ -352,6 +378,7 @@
               //       }
               //       idx++;
               //     }
+              //   var idx = 0;
               //   }
               // }
               break;
