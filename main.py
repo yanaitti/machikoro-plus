@@ -106,7 +106,7 @@ def create_game(nickname=''):
         'stocks': [],
         'coin_diff': [],
         'boardcards': [],
-        'dice': 0,
+        'dice': [],
         'players': []}
     player = {}
 
@@ -142,7 +142,7 @@ def join_game(gameid, nickname='default'):
 
         player['landmarks'] = []
         player['facilities'] = []
-        player['dice'] = 1
+        player['dices'] = 1
         game['players'].append(player)
 
         cache.set(gameid, game)
@@ -259,6 +259,9 @@ def buy_landmark(gameid, playerid, landmarkid):
 
     player['coins'] -= landmark['cost']
     landmark['turn'] = True
+
+    if landmarkid == 0:
+        player['dices'] = 2
 
     if len(player['landmarks']) == 4:
         game['status'] = 'end'
@@ -435,6 +438,7 @@ def next_player(gameid):
     game = cache.get(gameid)
 
     game['players'] = np.roll(np.array(game['players']), -1).tolist()
+    game['dice'] = []
 
     cache.set(gameid, game)
     return 'ok'
