@@ -58,6 +58,7 @@ mastercards = [
     {'name': 'スタジアム', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 2, 'style': 'ランドマーク', 'pack': 0},
     {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0},
     {'name': 'ビジネスセンター', 'type': 1, 'cost': 1, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0},
+
 ## 街コロ＋（プラス）
     {'name': '役所', 'type': 0, 'cost':0, 'style': 'ランドマーク', 'pack': 1},
     {'name': '港', 'type': 0, 'cost':2, 'style': 'ランドマーク', 'pack': 1},
@@ -74,6 +75,7 @@ mastercards = [
 
     {'name': '出版社', 'type': 1, 'cost': 5, 'score': '7', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 1},
     {'name': '税務署', 'type': 1, 'cost': 4, 'score': '8-9', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 1},
+
 ## 街コロシャープ
     {'name': '雑貨屋', 'type': 2, 'cost': 0, 'score': '2', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 2},
     {'name': 'コーン畑', 'type': 2, 'cost': 2, 'score': '3-4', 'stock': 6, 'get': 1, 'style': '農園', 'pack': 2},

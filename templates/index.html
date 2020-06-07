@@ -49,6 +49,9 @@
         <input type='radio' name='choice_dice' id="choice_dice" value='1'>1個</input>&nbsp;&nbsp;
         <input type='radio' name='choice_dice' id="choice_dice" value='2' disabled=true>2個</input><br/>
         <button id="roll_dice">ダイスを振る</button><br/>
+        <br/>
+        <span id='dice'></span><br/>
+        <br/>
         <button id="judgement">判定をする</button><br/>
         <button id="next_player">次の人へ</button><br/>
         <hr/>
@@ -72,6 +75,7 @@
     <script>
     var timeout = 1000;
     var timer = '';
+    var aaa = 'a';
 
     $(function() {
       var gId = '';
@@ -281,6 +285,11 @@
               $('#sec3').show();
               $('#sec4').show();
               // $('#gameover').empty();
+
+              $('#dice').text(data.dice.join(','));
+              if(data.players[playerPos].dices == 2){
+                $('input[type="radio"]').prop("disabled", false);
+              }
 
               if(data.players.length != $('#sel_player').children('option').length){
                 $('#sel_player').children().remove();
