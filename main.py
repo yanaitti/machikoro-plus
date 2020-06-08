@@ -174,7 +174,9 @@ def start_game(gameid, pack, ext=''):
         for mastercard in _mastercards:
             app.logger.debug(mastercard)
             if mastercard['type'] > 0:
-                boardcards.append({'name': mastercard['name'], 'cnt': 0, 'cost': mastercard['cost'], 'score': mastercard['score'], 'style': mastercard['style']})
+                c_mastercard = copy.deepcopy(mastercard)
+                c_mastercard['cnt'] = 0
+                boardcards.append(c_mastercard)
                 mCnt = mastercard['stock']
                 for i in list(range(mCnt)):
                     stocks.append(mastercard)
@@ -189,7 +191,10 @@ def start_game(gameid, pack, ext=''):
         for mastercard in _mastercards:
             app.logger.debug(mastercard)
             if mastercard['type'] > 0:
-                boardcards.append({'name': mastercard['name'], 'cnt': mastercard['stock'], 'cost': mastercard['cost'], 'score': mastercard['score'], 'style': mastercard['style']})
+                c_mastercard = copy.deepcopy(mastercard)
+                c_mastercard['cnt'] = mastercard['stock']
+                boardcards.append(c_mastercard)
+                # boardcards.append({'name': mastercard['name'], 'cnt': mastercard['stock'], 'cost': mastercard['cost'], 'score': mastercard['score'], 'style': mastercard['style']})
 
     # initialize for each players
     for player in game['players']:

@@ -392,7 +392,20 @@
                   var rowtable = $('<tr></tr>').appendTo($('#boardcards'));
                 }
                 if(data.boardcards[gIdx].cnt > 0){
-                  $('<td align="center">(' + data.boardcards[gIdx].score + ')<br/>' + data.boardcards[gIdx].name + '<br/>=' + data.boardcards[gIdx].cost + '=<br/>&lt;' + data.boardcards[gIdx].cnt + '&gt;</td>').appendTo(rowtable);
+                  switch(data.boardcards[gIdx].type){
+                    case 1:
+                      // green
+                      $('<td align="center"><font color="#00b300">■</font>(' + data.boardcards[gIdx].score + ')<br/>' + data.boardcards[gIdx].name + '<br/>=' + data.boardcards[gIdx].cost + '=<br/>&lt;' + data.boardcards[gIdx].cnt + '&gt;</td>').appendTo(rowtable);
+                      break;
+                    case 2:
+                      // red
+                      $('<td align="center"><font color="#b30000">▲</font>(' + data.boardcards[gIdx].score + ')<br/>' + data.boardcards[gIdx].name + '<br/>=' + data.boardcards[gIdx].cost + '=<br/>&lt;' + data.boardcards[gIdx].cnt + '&gt;</td>').appendTo(rowtable);
+                      break;
+                    case 3:
+                      // blue
+                      $('<td align="center"><font color="#0077b3">●</font>(' + data.boardcards[gIdx].score + ')<br/>' + data.boardcards[gIdx].name + '<br/>=' + data.boardcards[gIdx].cost + '=<br/>&lt;' + data.boardcards[gIdx].cnt + '&gt;</td>').appendTo(rowtable);
+                      break;
+                  }
                   gCnt++;
                 }
               }
