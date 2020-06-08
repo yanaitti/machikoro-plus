@@ -36,7 +36,7 @@
       </div>
       <div id='sec2' style='display:none'>
         <h4>Your role</h4>
-        <span id='routelist'></span>
+        <span id='yourcoins'></span>
         <hr/>
         <h4>Board Information</h4>
         <table id='boardcards' board=1>
@@ -64,8 +64,20 @@
         <button id="judgement">判定をする</button><br/>
         <br/>
         &lt;&lt;購入フェーズ&gt;&gt;<br/>
-        <select name='sel_buy' id="sel_buy"></select><br/>
-        <button id="buying">購入する</button><br/>
+        <table>
+          <tr>
+            <td align='center'>
+              ランドマーク<br/>
+              <select name='sel_buy_landmark' id="sel_buy_landmark"></select><br/>
+              <button id="buy_landmark">購入する</button><br/>
+            </td>
+            <td align='center'>
+              施設<br/>
+              <select name='sel_buy_facility' id="sel_buy_facility"></select><br/>
+              <button id="buy_facility">購入する</button><br/>
+            </td>
+          </tr>
+        </table>
         <br/>
         &lt;&lt;終了フェーズ&gt;&gt;<br/>
         <button id="next_player">次の人へ</button><br/>
@@ -201,6 +213,40 @@
         });
       });
 
+      // 施設の購入
+      $('#buy_facility').click(function() {
+        $('#message').empty();
+        $.ajax(gId + '/' + cId + '/buy/facility/' + $('#sel_buy_facility').val(),
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+          $('#buy_landmark').prop("disabled", true);
+          $('#buy_facility').prop("disabled", true);
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // ランドマークの購入
+      $('#buy_landmark').click(function() {
+        $('#message').empty();
+        $.ajax(gId + '/' + cId + '/buy/landmark/' + $('#sel_buy_landmark').val(),
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+          $('#buy_landmark').prop("disabled", true);
+          $('#buy_facility').prop("disabled", true);
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
       // roll the dice
       $('#roll_dice').click(function() {
         $('#message').empty();
@@ -245,6 +291,10 @@
         )
         .done(function(data) {
           // console.log(data)
+          $('#buy_facility').prop("disabled", false);
+          $('#buy_landmark').prop("disabled", false);
+          $('#roll_dice').prop("disabled", false);
+          $('#judgement').prop("disabled", false);
           $('#message').text('次に移動しました');
         })
         .fail(function() {
@@ -281,19 +331,37 @@
           switch(data.status){
             case 'started':
               $('#sec2').show();
-              $('#sec3').show();
+
+              if(data.players[0].playerid == cId){
+                $('#sec3').show();
+              }else{
+                $('#sec3').hide();
+                $('#sec4').hide();
+                $('#sec5').hide();
+              }
               $('#sec4').show();
+              $('#sec5').show();
+
+              console.log('cId:' + cId)
+
+              $('#yourcoins').text(data.players[playerPos].coins);
+
+              var gCnt = 0;
 
               $('#boardcards').empty();
-              // var rowtable = $('<tr></tr>').appendTo($('#boardcards'));
-              var gCnt = 0;
               for(var gIdx in data.boardcards){
                 if(gCnt % 5 == 0){
                   var rowtable = $('<tr></tr>').appendTo($('#boardcards'));
                 }
                 if(data.boardcards[gIdx].cnt > 0){
-                  $('<td align="center">' + data.boardcards[gIdx].name + '<br/>&lt;' + data.boardcards[gIdx].cnt + '&gt;</td>').appendTo(rowtable);
+                  $('<td align="center">(' + data.boardcards[gIdx].score + ')<br/>' + data.boardcards[gIdx].name + '<br/>=' + data.boardcards[gIdx].cost + '=<br/>&lt;' + data.boardcards[gIdx].cnt + '&gt;</td>').appendTo(rowtable);
                   gCnt++;
+                }
+              }
+              if(data.boardcards.length != $('#sel_buy_facility').children('option').length){
+                $('#sel_buy_facility').children().remove();
+                for(var gIdx in data.boardcards){
+                  $('#sel_buy_facility').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
                 }
               }
 
@@ -301,7 +369,15 @@
               var rowtable = $('<tr></tr>').appendTo($('#landmarks'));
               for(var pIdx in data.players[playerPos].landmarks){
                 landmark = data.players[playerPos].landmarks[pIdx]
-                $('<td align="center">' + landmark.name + '<br/>&lt;' + (data.turn? '建設済み':'工事中') + '&gt;</td>').appendTo(rowtable);
+                $('<td align="center">' + landmark.name + '<br/>=' + landmark.cost + '=<br/>&lt;' + (landmark.turn == true? '建設済み':'工事中') + '&gt;</td>').appendTo(rowtable);
+                $('#sel_buy_landmark').append('<option value="'+pIdx+'">' + landmark.name + '</option>');
+              }
+              if(data.players[playerPos].landmarks.length != $('#sel_buy_landmark').children('option').length){
+                $('#sel_buy_landmark').children().remove();
+                for(var pIdx in data.players[playerPos].landmarks){
+                  landmark = data.players[playerPos].landmarks[pIdx]
+                  $('#sel_buy_landmark').append('<option value="'+pIdx+'">' + landmark.name + '</option>');
+                }
               }
 
               $('#facilities').empty();
@@ -310,7 +386,7 @@
                   var rowtable = $('<tr></tr>').appendTo($('#facilities'));
                 }
                 facility = data.players[playerPos].facilities[fIdx]
-                $('<td align="center">' + facility.name + '</td>').appendTo(rowtable);
+                $('<td align="center">' + facility.name + '<br/></td>').appendTo(rowtable);
               }
 
               $('#dice').text(data.dice.join(','));
@@ -327,60 +403,6 @@
                 }
               }
 
-              // // checking turn
-              // teamid = data.players[playerPos].teamid;
-              // console.log("teamid:" + teamid + "turn:" + data.turn)
-              // if(teamid % 2 == data.turn){
-              //   $('#turn').text('your turn')
-              //   if(teamid < 2){
-              //     $('#sec4').show();
-              //   }
-              // }else{
-              //   $('#turn').text('not your turn')
-              //   $('#sec4').css('display', 'none');
-              // }
-              //
-              // // game board
-              // $('#gameboard tr').remove();
-              // if(teamid < 9){
-              //   for(var r = 0; r < 5; r++){
-              //     var rowtable = $('<tr></tr>').appendTo($('#gameboard'));
-              //     for(var c = 0; c < 5; c++){
-              //       if(teamid > 1 || data.board[idx].type > 3){
-              //         switch(data.board[idx].type){
-              //           case 0:
-              //             $('<td bgcolor="#ff6666">' + data.board[idx].codename + '</td>').appendTo(rowtable);
-              //             break;
-              //           case 1:
-              //             $('<td bgcolor="#6699ff">' + data.board[idx].codename + '</td>').appendTo(rowtable);
-              //             break;
-              //           case 2:
-              //             $('<td bgcolor="#ddd">' + data.board[idx].codename + '</td>').appendTo(rowtable);
-              //             break;
-              //           case 10:
-              //             $('<td bgcolor="#ff6666"><font color="#ff6666">' + data.board[idx].codename + '</font></td>').appendTo(rowtable);
-              //             break;
-              //           case 11:
-              //             $('<td bgcolor="#6699ff"><font color="#6699ff">' + data.board[idx].codename + '</font></td>').appendTo(rowtable);
-              //             break;
-              //           case 12:
-              //             $('<td bgcolor="#ddd"><font color="#ddd">' + data.board[idx].codename + '</font></td>').appendTo(rowtable);
-              //             break;
-              //           case 13:
-              //             $('<td><font color="#fff">' + data.board[idx].codename + '</font></td>').appendTo(rowtable);
-              //             break;
-              //           default:
-              //             $('<td>' + data.board[idx].codename + '</td>').appendTo(rowtable);
-              //             break;
-              //         }
-              //       }else{
-              //         $('<td>' + data.board[idx].codename + '</td>').appendTo(rowtable);
-              //       }
-              //       idx++;
-              //     }
-              //   var idx = 0;
-              //   }
-              // }
               break;
             case 'end':
               $('#gameover').text('Game Over');

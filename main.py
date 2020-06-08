@@ -149,7 +149,8 @@ def join_game(gameid, nickname='default'):
 
         cache.set(gameid, game)
 
-        return json.dumps(player)
+        # return json.dumps(player)
+        return playerid + ' ,' + player['nickname'] + ' ,' + game['status']
     else:
         return 'Already started'
 
@@ -173,7 +174,7 @@ def start_game(gameid, pack, ext=''):
         for mastercard in _mastercards:
             app.logger.debug(mastercard)
             if mastercard['type'] > 0:
-                boardcards.append({'name': mastercard['name'], 'cnt': 0, 'cost': mastercard['cost']})
+                boardcards.append({'name': mastercard['name'], 'cnt': 0, 'cost': mastercard['cost'], 'score': mastercard['score']})
                 mCnt = mastercard['stock']
                 for i in list(range(mCnt)):
                     stocks.append(mastercard)
@@ -188,7 +189,7 @@ def start_game(gameid, pack, ext=''):
         for mastercard in _mastercards:
             app.logger.debug(mastercard)
             if mastercard['type'] > 0:
-                boardcards.append({'name': mastercard['name'], 'cnt': mastercard['stock'], 'cost': mastercard['cost']})
+                boardcards.append({'name': mastercard['name'], 'cnt': mastercard['stock'], 'cost': mastercard['cost'], 'score': mastercard['score']})
 
 
     # initialize for each players
@@ -265,7 +266,7 @@ def buy_landmark(gameid, playerid, landmarkid):
     if landmarkid == 0:
         player['dices'] = 2
 
-    if len(player['landmarks']) == 4:
+    if len([landmark for landmark in player['landmarks'] if landmark['turn']]) == 4:
         game['status'] = 'end'
 
     cache.set(gameid, game)
