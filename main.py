@@ -174,7 +174,7 @@ def start_game(gameid, pack, ext=''):
         for mastercard in _mastercards:
             app.logger.debug(mastercard)
             if mastercard['type'] > 0:
-                boardcards.append({'name': mastercard['name'], 'cnt': 0, 'cost': mastercard['cost'], 'score': mastercard['score']})
+                boardcards.append({'name': mastercard['name'], 'cnt': 0, 'cost': mastercard['cost'], 'score': mastercard['score'], 'style': mastercard['style']})
                 mCnt = mastercard['stock']
                 for i in list(range(mCnt)):
                     stocks.append(mastercard)
@@ -189,7 +189,7 @@ def start_game(gameid, pack, ext=''):
         for mastercard in _mastercards:
             app.logger.debug(mastercard)
             if mastercard['type'] > 0:
-                boardcards.append({'name': mastercard['name'], 'cnt': mastercard['stock'], 'cost': mastercard['cost'], 'score': mastercard['score']})
+                boardcards.append({'name': mastercard['name'], 'cnt': mastercard['stock'], 'cost': mastercard['cost'], 'score': mastercard['score'], 'style': mastercard['style']})
 
     # initialize for each players
     for player in game['players']:
@@ -334,7 +334,7 @@ def judgement_dice(gameid, dice):
 
     player = game['players'][0]
     mycoin = player['coins']
-    retCd = 'ok'
+    retCd = ['ok']
 
     results = np.zeros(len(game['players'])).tolist()
 
@@ -398,11 +398,11 @@ def judgement_dice(gameid, dice):
         elif card['name'] == 'テレビ局':
             # 効果：（自分のターン）任意のプレイヤーから５コインもらう
             diff = 0
-            retCd = 'choicePlayer'
+            retCd.append('choicePlayer')
         elif card['name'] == 'ビジネスセンター':
             # 効果：（自分のターン）大施設以外の施設１軒を他プレイヤーと交換できる
             diff = 0
-            retCd = 'tradeCard'
+            retCd.append('tradeCard')
         else:
             player['coins'] += diff
 
@@ -430,8 +430,11 @@ def judgement_dice(gameid, dice):
 
     game['coin_diff'] = results
 
+# debug
+    # retCd.append('tradeCard')
+
     cache.set(gameid, game)
-    return retCd
+    return json.dumps(retCd)
 
 
 # next to player

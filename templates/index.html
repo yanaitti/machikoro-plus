@@ -270,15 +270,17 @@
       // judgement
       $('#judgement').click(function() {
         $('#message').empty();
-        $.ajax(gId + '/judgement/' + $('#hide_dice').val(),
+        $.getJSON(gId + '/judgement/' + $('#hide_dice').val(),
           {
             type: 'get',
           }
         )
         .done(function(data) {
-          if(data == 'choicePlayer'){
+          // alert($.inArray('ok', data));
+          if($.inArray('choicePlayer', data) > 0){
             $('#sec5').show();
-          }else if(data == 'tradeCard'){
+          }
+          if($.inArray('tradeCard', data) > 0){
             $('#sec4').show();
           }
         })
@@ -400,13 +402,16 @@
                   $('#sel_buy_facility').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
                 }
                 $('#sel_card1').children().remove();
-                for(var gIdx in data.boardcards){
-                  $('#sel_card1').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
-                }
                 $('#sel_card2').children().remove();
                 for(var gIdx in data.boardcards){
-                  $('#sel_card2').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
+                  if(data.boardcards[gIdx].style != 'ランドマーク'){
+                    $('#sel_card1').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
+                    $('#sel_card2').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
+                  }
                 }
+                // for(var gIdx in data.boardcards){
+                //   $('#sel_card2').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
+                // }
               }
 
               $('#landmarks').empty();
