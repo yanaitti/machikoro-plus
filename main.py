@@ -191,7 +191,6 @@ def start_game(gameid, pack, ext=''):
             if mastercard['type'] > 0:
                 boardcards.append({'name': mastercard['name'], 'cnt': mastercard['stock'], 'cost': mastercard['cost'], 'score': mastercard['score']})
 
-
     # initialize for each players
     for player in game['players']:
         player['facilities'] = []

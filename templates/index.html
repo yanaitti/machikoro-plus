@@ -85,14 +85,15 @@
       </div>
       <div id='sec4' style='display:none'>
         カード指定<br/>
-        <select name='sel_card' id="sel_card"></select><br/>
+        -&nbsp;あなたのカード:<select name='sel_card1' id="sel_card1"></select><br/>
+        -&nbsp;相手のカード:<select name='sel_card2' id="sel_card2"></select><br/>
         プレイヤー指定<br/>
-        <select name='sel_player' id="sel_player"></select><br/>
+        <select name='sel_player1' id="sel_player1"></select><br/>
         <button id="trade_card">カードを交換する</button><br/>
       </div>
       <div id='sec5' style='display:none'>
         プレイヤー指定<br/>
-        <select name='sel_player' id="sel_player"></select><br/>
+        <select name='sel_player2' id="sel_player2"></select><br/>
         <button id="get_point">ポイントをもらう</button><br/>
       </div>
       <br/>
@@ -275,6 +276,41 @@
           }
         )
         .done(function(data) {
+          if(data == 'choicePlayer'){
+            $('#sec5').show();
+          }else if(data == 'tradeCard'){
+            $('#sec4').show();
+          }
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // trade_card
+      $('#trade_card').click(function() {
+        $('#message').empty();
+        $.ajax(gId + '/' + cId + '/trade/' + $('#sel_player2').val() + '/' + $('#sel_card1').val() + '/' + $('#sel_card2').val(),
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
+        })
+        .fail(function() {
+          $('#message').text('エラーが発生しました');
+        });
+      });
+
+      // get_point
+      $('#get_point').click(function() {
+        $('#message').empty();
+        $.ajax(gId + '/' + cId + '/choice/' + $('#sel_player2').val(),
+          {
+            type: 'get',
+          }
+        )
+        .done(function(data) {
         })
         .fail(function() {
           $('#message').text('エラーが発生しました');
@@ -339,8 +375,8 @@
                 $('#sec4').hide();
                 $('#sec5').hide();
               }
-              $('#sec4').show();
-              $('#sec5').show();
+              // $('#sec4').show();
+              // $('#sec5').show();
 
               console.log('cId:' + cId)
 
@@ -362,6 +398,14 @@
                 $('#sel_buy_facility').children().remove();
                 for(var gIdx in data.boardcards){
                   $('#sel_buy_facility').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
+                }
+                $('#sel_card1').children().remove();
+                for(var gIdx in data.boardcards){
+                  $('#sel_card1').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
+                }
+                $('#sel_card2').children().remove();
+                for(var gIdx in data.boardcards){
+                  $('#sel_card2').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
                 }
               }
 
@@ -394,11 +438,13 @@
                 $('input[type="radio"]').prop("disabled", false);
               }
 
-              if(data.players.length != $('#sel_player').children('option').length){
-                $('#sel_player').children().remove();
+              if(data.players.length != $('#sel_player1').children('option').length){
+                $('#sel_player1').children().remove();
+                $('#sel_player2').children().remove();
                 for(var pIdx in data.players){
                   if(pIdx != playerPos){
-                    $('#sel_player').append('<option value="'+data.players[pIdx].playerid+'">'+data.players[pIdx].nickname+'</option>');
+                    $('#sel_player1').append('<option value="'+data.players[pIdx].playerid+'">'+data.players[pIdx].nickname+'</option>');
+                    $('#sel_player2').append('<option value="'+data.players[pIdx].playerid+'">'+data.players[pIdx].nickname+'</option>');
                   }
                 }
               }
