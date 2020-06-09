@@ -432,9 +432,9 @@
               for(var pIdx in data.players[playerPos].landmarks){
                 landmark = data.players[playerPos].landmarks[pIdx]
                 $('<td align="center">' + landmark.name + '<br/>=' + landmark.cost + '=<br/>&lt;' + (landmark.turn == true? '建設済み':'工事中') + '&gt;</td>').appendTo(rowtable);
-                $('#sel_buy_landmark').append('<option value="'+pIdx+'">' + landmark.name + '</option>');
               }
               if(data.players[playerPos].landmarks.length != $('#sel_buy_landmark').children('option').length){
+                console.log('landmark check:' + data.players[playerPos].landmarks.length + '/' + $('#sel_buy_landmark').children('option').length);
                 $('#sel_buy_landmark').children().remove();
                 for(var pIdx in data.players[playerPos].landmarks){
                   landmark = data.players[playerPos].landmarks[pIdx]
