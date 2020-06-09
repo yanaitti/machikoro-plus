@@ -118,6 +118,7 @@
           }
         )
         .done(function(data) {
+          $('#createGame').prop("disabled", true);
           $('#gId').text(data);
           $('#cId').text(data);
           $('#cName').text($('#cName_inp').val());
@@ -141,6 +142,7 @@
           }
         )
         .done(function(data) {
+          $('#joinGame').prop("disabled", true);
           _tmp = data.split(' ,');
           $('#cId').text(_tmp[0]);
           $('#cName').text(_tmp[1]);
