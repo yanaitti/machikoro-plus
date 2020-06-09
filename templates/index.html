@@ -35,14 +35,14 @@
         <button id="startGame4">街コロ＋(プラス)&lt;拡張ルールを始める&gt;</button><br/>
       </div>
       <div id='sec2' style='display:none'>
-        <h4>Your role</h4>
-        <span id='yourcoins'></span>
         <hr/>
         <h4>Board Information</h4>
+        ダイス:<span id='dice'></span><br/>
         <table id='boardcards' board=1>
         </table>
         <hr/>
         <h4>Your Information</h4>
+        あなたのコイン:<span id='yourcoins'></span><br/>
         ランドマーク:<br/>
         <table id='landmarks' board=1>
         </table>
@@ -59,7 +59,7 @@
         <input type='hidden' id='hide_dice' value='0'/>
         <button id="roll_dice">ダイスを振る</button><br/>
         <br/>
-        <span id='dice'></span><br/>
+        <span id='yourdice'></span><br/>
         <br/>
         <button id="judgement">判定をする</button><br/>
         <br/>
@@ -276,6 +276,7 @@
           }
         )
         .done(function(data) {
+          $('#judgement').prop("disabled", true);
           // alert($.inArray('ok', data));
           if($.inArray('choicePlayer', data) > 0){
             $('#sec5').show();
@@ -434,7 +435,6 @@
                 $('<td align="center">' + landmark.name + '<br/>=' + landmark.cost + '=<br/>&lt;' + (landmark.turn == true? '建設済み':'工事中') + '&gt;</td>').appendTo(rowtable);
               }
               if(data.players[playerPos].landmarks.length != $('#sel_buy_landmark').children('option').length){
-                console.log('landmark check:' + data.players[playerPos].landmarks.length + '/' + $('#sel_buy_landmark').children('option').length);
                 $('#sel_buy_landmark').children().remove();
                 for(var pIdx in data.players[playerPos].landmarks){
                   landmark = data.players[playerPos].landmarks[pIdx]
@@ -444,14 +444,29 @@
 
               $('#facilities').empty();
               for(var fIdx in data.players[playerPos].facilities){
-                if(fIdx % 5 == 0){
+                if(fIdx % 10 == 0){
                   var rowtable = $('<tr></tr>').appendTo($('#facilities'));
                 }
                 facility = data.players[playerPos].facilities[fIdx]
-                $('<td align="center">' + facility.name + '<br/></td>').appendTo(rowtable);
+                // $('<td align="center">' + facility.name + '<br/></td>').appendTo(rowtable);
+                switch(facility.type){
+                  case 1:
+                    // green
+                    $('<td align="center"><font color="#00b300">■</font>(' + facility.score + ')<br/>' + facility.name + '</td>').appendTo(rowtable);
+                    break;
+                  case 2:
+                    // red
+                    $('<td align="center"><font color="#b30000">▲</font>(' + facility.score + ')<br/>' + facility.name + '</td>').appendTo(rowtable);
+                    break;
+                  case 3:
+                    // blue
+                    $('<td align="center"><font color="#0077b3">●</font>(' + facility.score + ')<br/>' + facility.name + '</td>').appendTo(rowtable);
+                    break;
+                }
               }
 
               $('#dice').text(data.dice.join(','));
+              $('#yourdice').text(data.dice.join(','));
               if(data.players[playerPos].dices == 2){
                 $('input[type="radio"]').prop("disabled", false);
               }
