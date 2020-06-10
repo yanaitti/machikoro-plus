@@ -37,60 +37,60 @@ score 出目
 
 mastercards = [
 ## 街コロ
-    {'name': '駅', 'type': 0, 'cost':4, 'style': 'ランドマーク', 'pack': 0},
-    {'name': 'ショッピングモール', 'type': 0, 'cost':10, 'style': 'ランドマーク', 'pack': 0},
-    {'name': '遊園地', 'type': 0, 'cost': 16, 'style': 'ランドマーク', 'pack': 0},
-    {'name': '電波塔', 'type': 0, 'cost': 22, 'style': 'ランドマーク', 'pack': 0},
+    {'name': '駅', 'type': 0, 'cost':4, 'style': 'ランドマーク', 'pack': 0, 'available': True},
+    {'name': 'ショッピングモール', 'type': 0, 'cost':10, 'style': 'ランドマーク', 'pack': 0, 'available': True},
+    {'name': '遊園地', 'type': 0, 'cost': 16, 'style': 'ランドマーク', 'pack': 0, 'available': True},
+    {'name': '電波塔', 'type': 0, 'cost': 22, 'style': 'ランドマーク', 'pack': 0, 'available': True},
 
-    {'name': '麦畑', 'type': 3, 'cost': 1, 'score': '1', 'stock': 6, 'get': 1, 'style': '農園', 'pack': 0},
-    {'name': '牧場', 'type': 3, 'cost': 1, 'score': '2', 'stock': 6, 'get': 1, 'style': '牧場', 'pack': 0},
-    {'name': 'パン屋', 'type': 1, 'cost': 1, 'score': '2-3', 'stock': 6, 'get': 1, 'style': '商店', 'pack': 0},
-    {'name': 'カフェ', 'type': 2, 'cost': 2, 'score': '3', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 0},
-    {'name': 'コンビニ', 'type': 1, 'cost': 2, 'score': '4', 'stock': 6, 'get': 3, 'style': '商店', 'pack': 0},
-    {'name': '森林', 'type': 3, 'cost': 3, 'score': '5', 'stock': 6, 'get': 1, 'style': '自然', 'pack': 0},
-    {'name': 'チーズ工場', 'type': 1, 'cost': 5, 'score': '7', 'stock': 6, 'get': 3, 'style': '工場', 'pack': 0},
-    {'name': '家具工場', 'type': 1, 'cost': 3, 'score': '8', 'stock': 6, 'get': 3, 'style': '工場', 'pack': 0},
-    {'name': '鉱山', 'type': 3, 'cost': 6, 'score': '9', 'stock': 6, 'get': 5, 'style': '自然', 'pack': 0},
-    {'name': 'ファミレス', 'type': 2, 'cost': 3, 'score': '9-10', 'stock': 6, 'get': 2, 'style': '飲食店', 'pack': 0},
-    {'name': 'リンゴ園', 'type': 3, 'cost': 3, 'score': '10', 'stock': 6, 'get': 3, 'style': '農園', 'pack': 0},
-    {'name': '青果市場', 'type': 1, 'cost': 2, 'score': '11-12', 'stock': 6, 'get': 2, 'style': '市場', 'pack': 0},
+    {'name': '麦畑', 'type': 3, 'cost': 1, 'score': '1', 'stock': 6, 'get': 1, 'style': '農園', 'pack': 0, 'available': True},
+    {'name': '牧場', 'type': 3, 'cost': 1, 'score': '2', 'stock': 6, 'get': 1, 'style': '牧場', 'pack': 0, 'available': True},
+    {'name': 'パン屋', 'type': 1, 'cost': 1, 'score': '2-3', 'stock': 6, 'get': 1, 'style': '商店', 'pack': 0, 'available': True},
+    {'name': 'カフェ', 'type': 2, 'cost': 2, 'score': '3', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 0, 'available': True},
+    {'name': 'コンビニ', 'type': 1, 'cost': 2, 'score': '4', 'stock': 6, 'get': 3, 'style': '商店', 'pack': 0, 'available': True},
+    {'name': '森林', 'type': 3, 'cost': 3, 'score': '5', 'stock': 6, 'get': 1, 'style': '自然', 'pack': 0, 'available': True},
+    {'name': 'チーズ工場', 'type': 1, 'cost': 5, 'score': '7', 'stock': 6, 'get': 3, 'style': '工場', 'pack': 0, 'available': True},
+    {'name': '家具工場', 'type': 1, 'cost': 3, 'score': '8', 'stock': 6, 'get': 3, 'style': '工場', 'pack': 0, 'available': True},
+    {'name': '鉱山', 'type': 3, 'cost': 6, 'score': '9', 'stock': 6, 'get': 5, 'style': '自然', 'pack': 0, 'available': True},
+    {'name': 'ファミレス', 'type': 2, 'cost': 3, 'score': '9-10', 'stock': 6, 'get': 2, 'style': '飲食店', 'pack': 0, 'available': True},
+    {'name': 'リンゴ園', 'type': 3, 'cost': 3, 'score': '10', 'stock': 6, 'get': 3, 'style': '農園', 'pack': 0, 'available': True},
+    {'name': '青果市場', 'type': 1, 'cost': 2, 'score': '11-12', 'stock': 6, 'get': 2, 'style': '市場', 'pack': 0, 'available': True},
 
-    {'name': 'スタジアム', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 2, 'style': 'ランドマーク', 'pack': 0},
-    {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0},
-    {'name': 'ビジネスセンター', 'type': 1, 'cost': 1, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0},
+    {'name': 'スタジアム', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 2, 'style': 'ランドマーク', 'pack': 0, 'available': True},
+    {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0, 'available': True},
+    {'name': 'ビジネスセンター', 'type': 1, 'cost': 1, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0, 'available': True},
 
 ## 街コロ＋（プラス）
-    {'name': '役所', 'type': 0, 'cost':0, 'style': 'ランドマーク', 'pack': 1},
-    {'name': '港', 'type': 0, 'cost':2, 'style': 'ランドマーク', 'pack': 1},
-    {'name': '空港', 'type': 0, 'cost': 30, 'style': 'ランドマーク', 'pack': 1},
+    {'name': '役所', 'type': 0, 'cost':0, 'style': 'ランドマーク', 'pack': 1, 'available': True},
+    {'name': '港', 'type': 0, 'cost':2, 'style': 'ランドマーク', 'pack': 1, 'available': False},
+    {'name': '空港', 'type': 0, 'cost': 30, 'style': 'ランドマーク', 'pack': 1, 'available': True},
 
-    {'name': '寿司屋', 'type': 2, 'cost': 1, 'score': '1', 'stock': 6, 'get': 3, 'style': '飲食店', 'pack': 1},
-    {'name': '花畑', 'type': 3, 'cost': 2, 'score': '4', 'stock': 6, 'get': 2, 'style': '農園', 'pack': 1},
-    {'name': 'フラワーショップ', 'type': 1, 'cost': 1, 'score': '6', 'stock': 6, 'get': 1, 'style': '商店', 'pack': 1},
-    {'name': 'ピザ屋', 'type': 2, 'cost': 1, 'score': '7', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 1},
-    {'name': 'バーガーショップ', 'type': 2, 'cost': 1, 'score': '8', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 1},
-    {'name': 'サンマ漁船', 'type': 3, 'cost': 2, 'score': '8', 'stock': 6, 'get': 3, 'style': '漁船', 'pack': 1},
-    {'name': '食品倉庫', 'type': 1, 'cost': 2, 'score': '12-13', 'stock': 6, 'get': 2, 'style': '工場', 'pack': 1},
-    {'name': 'マグロ漁船', 'type': 3, 'cost': 5, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '漁船', 'pack': 1},
+    {'name': '寿司屋', 'type': 2, 'cost': 1, 'score': '1', 'stock': 6, 'get': 3, 'style': '飲食店', 'pack': 1, 'available': True},
+    {'name': '花畑', 'type': 3, 'cost': 2, 'score': '4', 'stock': 6, 'get': 2, 'style': '農園', 'pack': 1, 'available': True},
+    {'name': 'フラワーショップ', 'type': 1, 'cost': 1, 'score': '6', 'stock': 6, 'get': 1, 'style': '商店', 'pack': 1, 'available': True},
+    {'name': 'ピザ屋', 'type': 2, 'cost': 1, 'score': '7', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 1, 'available': True},
+    {'name': 'バーガーショップ', 'type': 2, 'cost': 1, 'score': '8', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 1, 'available': True},
+    {'name': 'サンマ漁船', 'type': 3, 'cost': 2, 'score': '8', 'stock': 6, 'get': 3, 'style': '漁船', 'pack': 1, 'available': True},
+    {'name': '食品倉庫', 'type': 1, 'cost': 2, 'score': '12-13', 'stock': 6, 'get': 2, 'style': '工場', 'pack': 1, 'available': True},
+    {'name': 'マグロ漁船', 'type': 3, 'cost': 5, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '漁船', 'pack': 1, 'available': False},
 
-    {'name': '出版社', 'type': 1, 'cost': 5, 'score': '7', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 1},
-    {'name': '税務署', 'type': 1, 'cost': 4, 'score': '8-9', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 1},
+    {'name': '出版社', 'type': 1, 'cost': 5, 'score': '7', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 1, 'available': False},
+    {'name': '税務署', 'type': 1, 'cost': 4, 'score': '8-9', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 1, 'available': False},
 
 ## 街コロシャープ
-    {'name': '雑貨屋', 'type': 2, 'cost': 0, 'score': '2', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 2},
-    {'name': 'コーン畑', 'type': 2, 'cost': 2, 'score': '3-4', 'stock': 6, 'get': 1, 'style': '農園', 'pack': 2},
-    {'name': '改装屋', 'type': 2, 'cost': 1, 'score': '4', 'stock': 6, 'get': 8, 'style': '業者', 'pack': 2},
-    {'name': '高級フレンチ', 'type': 2, 'cost': 3, 'score': '5', 'stock': 6, 'get': 5, 'style': '飲食店', 'pack': 2},
-    {'name': '賃金業', 'type': 2, 'cost': 0, 'score': '5-6', 'stock': 6, 'get': 2, 'style': '業者', 'pack': 2},
-    {'name': 'ブドウ園', 'type': 2, 'cost': 3, 'score': '7', 'stock': 6, 'get': 3, 'style': '農園', 'pack': 2},
-    {'name': 'ワイナリー', 'type': 2, 'cost': 3, 'score': '9', 'stock': 6, 'get': 6, 'style': '工場', 'pack': 2},
-    {'name': '引越し屋', 'type': 2, 'cost': 2, 'score': '9-10', 'stock': 6, 'get': 4, 'style': '業者', 'pack': 2},
-    {'name': 'ドリンク工場', 'type': 2, 'cost': 5, 'score': '11', 'stock': 6, 'get': 1, 'style': '工場', 'pack': 2},
-    {'name': '会員制ＢＡＲ', 'type': 2, 'cost': 4, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '飲食店', 'pack': 2},
+    {'name': '雑貨屋', 'type': 2, 'cost': 0, 'score': '2', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 2, 'available': False},
+    {'name': 'コーン畑', 'type': 2, 'cost': 2, 'score': '3-4', 'stock': 6, 'get': 1, 'style': '農園', 'pack': 2, 'available': False},
+    {'name': '改装屋', 'type': 2, 'cost': 1, 'score': '4', 'stock': 6, 'get': 8, 'style': '業者', 'pack': 2, 'available': False},
+    {'name': '高級フレンチ', 'type': 2, 'cost': 3, 'score': '5', 'stock': 6, 'get': 5, 'style': '飲食店', 'pack': 2, 'available': False},
+    {'name': '賃金業', 'type': 2, 'cost': 0, 'score': '5-6', 'stock': 6, 'get': 2, 'style': '業者', 'pack': 2, 'available': False},
+    {'name': 'ブドウ園', 'type': 2, 'cost': 3, 'score': '7', 'stock': 6, 'get': 3, 'style': '農園', 'pack': 2, 'available': True},
+    {'name': 'ワイナリー', 'type': 2, 'cost': 3, 'score': '9', 'stock': 6, 'get': 6, 'style': '工場', 'pack': 2, 'available': False},
+    {'name': '引越し屋', 'type': 2, 'cost': 2, 'score': '9-10', 'stock': 6, 'get': 4, 'style': '業者', 'pack': 2, 'available': False},
+    {'name': 'ドリンク工場', 'type': 2, 'cost': 5, 'score': '11', 'stock': 6, 'get': 1, 'style': '工場', 'pack': 2, 'available': True},
+    {'name': '会員制ＢＡＲ', 'type': 2, 'cost': 4, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '飲食店', 'pack': 2, 'available': True},
 
-    {'name': '清掃業', 'type': 1, 'cost': 4, 'score': '8', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 2},
-    {'name': 'ＩＴベンチャー', 'type': 1, 'cost': 1, 'score': '10', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 2},
-    {'name': '公園', 'type': 1, 'cost': 3, 'score': '11-13', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 2},
+    {'name': '清掃業', 'type': 1, 'cost': 4, 'score': '8', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 2, 'available': False},
+    {'name': 'ＩＴベンチャー', 'type': 1, 'cost': 1, 'score': '10', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 2, 'available': False},
+    {'name': '公園', 'type': 1, 'cost': 3, 'score': '11-13', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 2, 'available': False},
 ]
 
 
@@ -109,6 +109,7 @@ def create_game(nickname=''):
         'coin_diff': [],
         'boardcards': [],
         'dice': [],
+        'pack': 0,
         'players': []}
     player = {}
 
@@ -149,27 +150,61 @@ def join_game(gameid, nickname='default'):
 
         cache.set(gameid, game)
 
-        # return json.dumps(player)
-        return playerid + ' ,' + player['nickname'] + ' ,' + game['status']
+        return json.dumps(player)
+        # return playerid + ' ,' + player['nickname'] + ' ,' + game['status']
     else:
         return 'Already started'
 
 
+# get available cards list the game
+@app.route('/<gameid>/availablelists/<int:pack>')
+def get_availablelists(gameid, pack):
+    game = cache.get(gameid)
+    pakaging_cards = []
+
+    pakaging_cards = [_mastercard for _mastercard in mastercards if _mastercard['pack'] <= pack]
+
+    game['pack'] = pack
+
+    cache.set(gameid, game)
+    return json.dumps(pakaging_cards)
+
+
+# set up cards list the game
+@app.route('/<gameid>/setup/<selectcards>')
+def setup_game(gameid, selectcards):
+    game = cache.get(gameid)
+
+    pack = game['pack']
+    select_cards = selectcards.split(',')
+
+    pakaging_cards = [_mastercard for _mastercard in mastercards if _mastercard['pack'] <= pack]
+    selected_cards = [_mastercard for _mIdx, _mastercard in enumerate(pakaging_cards) if str(_mIdx) in select_cards]
+
+    game['mastercards'] = selected_cards
+
+    cache.set(gameid, game)
+    return json.dumps(selected_cards)
+    # return json.dumps(select_cards)
+
+
 # start the game
-@app.route('/<gameid>/start/<int:pack>')
-@app.route('/<gameid>/start/<int:pack>/<ext>')
-def start_game(gameid, pack, ext=''):
+@app.route('/<gameid>/start')
+@app.route('/<gameid>/start/<ext>')
+def start_game(gameid, ext=''):
     game = cache.get(gameid)
     app.logger.debug(gameid)
     app.logger.debug(game)
     game['status'] = 'started'
     game['ext'] = ext
+    pack = game['pack']
 
     # initial card setting
     stocks = []
     boardcards = []
 
-    _mastercards = [_mastercard for _mastercard in mastercards if _mastercard['pack'] <= pack]
+    # _mastercards = [_mastercard for _mastercard in mastercards if _mastercard['pack'] <= pack]
+    _mastercards = [_mastercard for _mastercard in game['mastercards'] if _mastercard['pack'] <= pack]
     if game['ext'] == 'ext':
         for mastercard in _mastercards:
             app.logger.debug(mastercard)
@@ -208,10 +243,10 @@ def start_game(gameid, pack, ext=''):
         for mastercard in _mastercards:
             if mastercard['type'] == 0:
                 landmark = copy.deepcopy(mastercard)
-                landmark['turn'] = False
+                landmark['turn'] = True if game['pack'] == 1 and mastercard['name'] == '役所' else False
                 player['landmarks'].append(landmark)
 
-    game['mastercards'] = _mastercards
+    # game['mastercards'] = _mastercards
     game['stocks'] = stocks
     game['boardcards'] = boardcards
 
@@ -337,7 +372,7 @@ def choice_player(gameid, playerid, fromplayerid):
 def judgement_dice(gameid, dice):
     game = cache.get(gameid)
 
-    player = game['players'][0]
+    player = game['players'][0] # current player
     mycoin = player['coins']
     retCd = ['ok']
 
@@ -359,6 +394,14 @@ def judgement_dice(gameid, dice):
                 else:
                     if scores[0] <= dice <= scores[1]:
                         diff = getcoin if player['coins'] > getcoin else player['coins']
+
+                if card['name'] == '寿司屋':
+                    if len([_card for _card in player['landmarks'] if _card['turn'] == True and _card['name'] == '港']) == 1:
+                        diff = 3 if player['coin'] > 3 else player['coin']
+                elif card['name'] == '会員制ＢＡＲ':
+                    if len([_card for _card in player['landmarks'] if _card['turn'] == True]) > 2:
+                        diff = player['coin']
+
                 player['coins'] -= diff
                 results[0] -= diff
                 _player['coins'] += diff
@@ -389,6 +432,25 @@ def judgement_dice(gameid, dice):
             player['coins'] += diff
         elif card['name'] == '青果市場':
             diff *= len([_card for _card in player['facilities'] if _card['style'] == '農園'])
+            player['coins'] += diff
+        elif card['name'] == 'フラワーショップ':
+            diff *= len([_card for _card in player['facilities'] if _card['name'] == '花畑'])
+            player['coins'] += diff
+        elif card['name'] == '食品倉庫':
+            diff *= len([_card for _card in player['facilities'] if _card['style'] == '飲食店'])
+            player['coins'] += diff
+        elif card['name'] == 'ワイナリー':
+            # 休業にできないww
+            diff *= len([_card for _card in player['facilities'] if _card['name'] == 'ブドウ園'])
+            player['coins'] += diff
+        elif card['name'] == '引越屋':
+            # 検討中
+            continue
+        elif card['name'] == 'ドリンク工場':
+            counts = 0
+            for pIdx in game['players']:
+                counts += len([_card for _card in player['facilities'] if _card['style'] == '飲食店'])
+            diff *= counts
             player['coins'] += diff
         elif card['name'] == 'スタジアム':
             # 効果：（自分のターン）全員から２コインもらう
@@ -428,6 +490,11 @@ def judgement_dice(gameid, dice):
             else:
                 if scores[0] <= dice <= scores[1]:
                     diff = card['get']
+
+            if card['name'] == 'サンマ漁船':
+                if len([landmark for landmark in _players['landmarks'] if landmark.name == '港' and landmark.turn == True]) > 0:
+                    diff += 3
+
             coins += diff
 
         _player['coins'] += coins
@@ -435,8 +502,11 @@ def judgement_dice(gameid, dice):
 
     game['coin_diff'] = results
 
-# debug
-    # retCd.append('tradeCard')
+    # 街コロ＋（役所効果）
+    if game['pack'] == 1:
+        for pIdx, _player in enumerate(game['players']):
+            if _player['coins'] == 0:
+                _player['coins'] += 1
 
     cache.set(gameid, game)
     return json.dumps(retCd)
@@ -444,8 +514,16 @@ def judgement_dice(gameid, dice):
 
 # next to player
 @app.route('/<gameid>/next')
-def next_player(gameid):
+@app.route('/<gameid>/next/<int:nobuy>')
+def next_player(gameid, nobuy=0):
     game = cache.get(gameid)
+
+    if game['pack'] == 1:
+        if nobuy == 0:
+            for landmark in game['players'][0]['landmarks']:
+                if landmark.name == '空港' and landmark.turn == True:
+                    game['players'][0]['coins'] += 10
+
 
     game['players'] = np.roll(np.array(game['players']), -1).tolist()
     game['dice'] = []

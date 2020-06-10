@@ -21,11 +21,19 @@ class MainTestCase(unittest.TestCase):
     def join_game_w_name(self, gameid, nickname):
         return self.app.get(gameid + '/join/' + nickname, follow_redirects=True)
 
-    def start_game(self, gameid, pack, ext):
+    def get_availablelists(self, gameid, pack):
+        return self.app.get(gameid + '/availablelists/' + str(pack), follow_redirects=True)
+
+    def set_using_cards(self, gameid, sel_cardlists):
+        # print(sel_cardlists)
+        # print(','.join(sel_cardlists))
+        return self.app.get(gameid + '/setup/' + ','.join(map(str,sel_cardlists)), follow_redirects=True)
+
+    def start_game(self, gameid, ext):
         if ext != '':
-            return self.app.get(gameid + '/start/' + str(pack) + '/ext', follow_redirects=True)
+            return self.app.get(gameid + '/start/ext', follow_redirects=True)
         else:
-            return self.app.get(gameid + '/start/' + str(pack), follow_redirects=True)
+            return self.app.get(gameid + '/start', follow_redirects=True)
 
     def status_game(self, gameid):
         return self.app.get(gameid + '/status', follow_redirects=True)
@@ -95,10 +103,27 @@ class MainTestCase(unittest.TestCase):
                 assert data['nickname'] == data['playerid']
 
         ###########################################################
+        # Get Available Cards
+        print('#####################################')
+
+        rv = self.get_availablelists(gameid, 0)
+        # print(json.loads(rv.get_data()))
+        assert 19 == len(json.loads(rv.get_data()))
+
+        ###########################################################
+        # Set Using Cards
+        print('#####################################')
+
+        rv = self.set_using_cards(gameid, range(19))
+        # print(json.loads(rv.get_data()))
+        assert 19 == len(json.loads(rv.get_data()))
+
+        ###########################################################
         # Start Game
         print('#####################################')
 
-        rv = self.start_game(gameid, 0, '')
+        rv = self.start_game(gameid, '')
+        print(rv.get_data())
         assert b'ok' in rv.get_data()
 
         ###########################################################
@@ -115,7 +140,7 @@ class MainTestCase(unittest.TestCase):
         # Start Game
         print('#####################################')
 
-        rv = self.start_game(gameid, 0, 'ext')
+        rv = self.start_game(gameid, 'ext')
         assert b'ok' in rv.get_data()
 
         ###########################################################
