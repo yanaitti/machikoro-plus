@@ -61,7 +61,7 @@ mastercards = [
 
 ## 街コロ＋（プラス）
     {'name': '役所', 'type': 0, 'cost':0, 'style': 'ランドマーク', 'pack': 1, 'available': True},
-    {'name': '港', 'type': 0, 'cost':2, 'style': 'ランドマーク', 'pack': 1, 'available': False},
+    {'name': '港', 'type': 0, 'cost':2, 'style': 'ランドマーク', 'pack': 1, 'available': True},
     {'name': '空港', 'type': 0, 'cost': 30, 'style': 'ランドマーク', 'pack': 1, 'available': True},
 
     {'name': '寿司屋', 'type': 2, 'cost': 1, 'score': '1', 'stock': 6, 'get': 3, 'style': '飲食店', 'pack': 1, 'available': True},
@@ -77,10 +77,10 @@ mastercards = [
     {'name': '税務署', 'type': 1, 'cost': 4, 'score': '8-9', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 1, 'available': False},
 
 ## 街コロシャープ
-    {'name': '雑貨屋', 'type': 2, 'cost': 0, 'score': '2', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 2, 'available': False},
-    {'name': 'コーン畑', 'type': 2, 'cost': 2, 'score': '3-4', 'stock': 6, 'get': 1, 'style': '農園', 'pack': 2, 'available': False},
+    {'name': '雑貨屋', 'type': 2, 'cost': 0, 'score': '2', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 2, 'available': True},
+    {'name': 'コーン畑', 'type': 2, 'cost': 2, 'score': '3-4', 'stock': 6, 'get': 1, 'style': '農園', 'pack': 2, 'available': True},
     {'name': '改装屋', 'type': 2, 'cost': 1, 'score': '4', 'stock': 6, 'get': 8, 'style': '業者', 'pack': 2, 'available': False},
-    {'name': '高級フレンチ', 'type': 2, 'cost': 3, 'score': '5', 'stock': 6, 'get': 5, 'style': '飲食店', 'pack': 2, 'available': False},
+    {'name': '高級フレンチ', 'type': 2, 'cost': 3, 'score': '5', 'stock': 6, 'get': 5, 'style': '飲食店', 'pack': 2, 'available': True},
     {'name': '賃金業', 'type': 2, 'cost': 0, 'score': '5-6', 'stock': 6, 'get': 2, 'style': '業者', 'pack': 2, 'available': False},
     {'name': 'ブドウ園', 'type': 2, 'cost': 3, 'score': '7', 'stock': 6, 'get': 3, 'style': '農園', 'pack': 2, 'available': True},
     {'name': 'ワイナリー', 'type': 2, 'cost': 3, 'score': '9', 'stock': 6, 'get': 6, 'style': '工場', 'pack': 2, 'available': False},
@@ -396,15 +396,26 @@ def judgement_dice(gameid, dice):
                         diff = getcoin if player['coins'] > getcoin else player['coins']
 
                 if card['name'] == '寿司屋':
-                    if len([_card for _card in player['landmarks'] if _card['turn'] == True and _card['name'] == '港']) == 1:
-                        diff = 3 if player['coin'] > 3 else player['coin']
+                    if len([_landmark for _landmark in _player['landmarks'] if _landmark['turn'] == True and _landmark['name'] == '港']) == 1:
+                        diff = diff if player['coins'] > diff else player['coins']
+                        player['coins'] -= diff
+                        _player['coins'] += diff
                 elif card['name'] == '会員制ＢＡＲ':
-                    if len([_card for _card in player['landmarks'] if _card['turn'] == True]) > 2:
-                        diff = player['coin']
+                    if len([_card for _card in _player['landmarks'] if _card['turn'] == True]) > 2:
+                        diff = player['coins']
+                        player['coins'] -= diff
+                        _player['coins'] += diff
+                elif card['name'] == '高級フレンチ':
+                    if len([_card for _card in _player['landmarks'] if _card['turn'] == True]) > 1:
+                        diff = diff if player['coins'] > diff else player['coins']
+                        player['coins'] -= diff
+                        _player['coins'] += diff
+                else:
+                    diff = diff if player['coins'] > diff else player['coins']
+                    player['coins'] -= diff
+                    _player['coins'] += diff
 
-                player['coins'] -= diff
                 results[0] -= diff
-                _player['coins'] += diff
                 coins += diff
 
         results[pIdx] += coins
@@ -470,6 +481,9 @@ def judgement_dice(gameid, dice):
             # 効果：（自分のターン）大施設以外の施設１軒を他プレイヤーと交換できる
             diff = 0
             retCd.append('tradeCard')
+        elif card['name'] == '雑貨屋':
+            if len([_card for _card in player['landmarks'] if _card['turn'] == True]) < 2:
+                player['coins'] += diff
         else:
             player['coins'] += diff
 
@@ -492,21 +506,24 @@ def judgement_dice(gameid, dice):
                     diff = card['get']
 
             if card['name'] == 'サンマ漁船':
-                if len([landmark for landmark in _players['landmarks'] if landmark.name == '港' and landmark.turn == True]) > 0:
-                    diff += 3
+                if len([landmark for landmark in _player['landmarks'] if landmark['name'] == '港' and landmark['turn'] == True]) > 0:
+                    coins += diff
+                    _player['coins'] += diff
+            elif card['name'] == 'コーン畑':
+                if len([landmark for landmark in _player['landmarks'] if landmark['turn'] == True]) < 2:
+                    coins += diff
+                    _player['coins'] += diff
+            else:
+                coins += diff
+                _player['coins'] += diff
 
-            coins += diff
-
-        _player['coins'] += coins
         results[pIdx] += coins
 
     game['coin_diff'] = results
 
     # 街コロ＋（役所効果）
-    if game['pack'] == 1:
-        for pIdx, _player in enumerate(game['players']):
-            if _player['coins'] == 0:
-                _player['coins'] += 1
+    if game['pack'] == 1 and player['coins'] == 0:
+        player['coins'] += 1
 
     cache.set(gameid, game)
     return json.dumps(retCd)
@@ -519,11 +536,11 @@ def next_player(gameid, nobuy=0):
     game = cache.get(gameid)
 
     if game['pack'] == 1:
-        if nobuy == 0:
-            for landmark in game['players'][0]['landmarks']:
-                if landmark.name == '空港' and landmark.turn == True:
-                    game['players'][0]['coins'] += 10
-
+        if nobuy == 1:
+            player = game['players'][0]
+            landmark = [landmark for landmark in player['landmarks'] if landmark['name'] == '空港'][0]
+            if landmark['turn'] == True:
+                game['players'][0]['coins'] += 10
 
     game['players'] = np.roll(np.array(game['players']), -1).tolist()
     game['dice'] = []
