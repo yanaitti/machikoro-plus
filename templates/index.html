@@ -204,16 +204,10 @@
           // console.log(data);
           $('#availableCardList').empty();
           for(var mIdx in data){
-            // console.log(data[mIdx]);
-            // if(mIdx < 6){
-            //   $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'" checked>'+data[mIdx].name+'<br/>');
-            // }else{
-            //   $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'">'+data[mIdx].name+'<br/>');
-            // }
             if(data[mIdx].available){
               $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'" checked>'+data[mIdx].name+'<br/>');
             }else{
-              $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'">'+data[mIdx].name+'<br/>');
+              $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'" disabled>'+data[mIdx].name+'<br/>');
             }
           }
         })
@@ -234,16 +228,10 @@
           // console.log(data);
           $('#availableCardList').empty();
           for(var mIdx in data){
-            // console.log(data[mIdx]);
-            // if(mIdx < 6){
-            //   $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'" checked>'+data[mIdx].name+'<br/>');
-            // }else{
-            //   $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'">'+data[mIdx].name+'<br/>');
-            // }
             if(data[mIdx].available){
               $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'" checked>'+data[mIdx].name+'<br/>');
             }else{
-              $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'">'+data[mIdx].name+'<br/>');
+              $('#availableCardList').append('<input type="checkbox" name="cards[]" value="'+mIdx+'" disabled>'+data[mIdx].name+'<br/>');
             }
           }
         })
@@ -383,6 +371,7 @@
       // plus2
       $('#plus2').click(function() {
         $('#hide_dice').val(Number($('#hide_dice').val()) + 2);
+        $('#plus2').prop('disabled', true);
       });
 
       // Next player
