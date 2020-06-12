@@ -150,8 +150,8 @@ def join_game(gameid, nickname='default'):
 
         cache.set(gameid, game)
 
-        return json.dumps(player)
-        # return playerid + ' ,' + player['nickname'] + ' ,' + game['status']
+        # return json.dumps(player)
+        return playerid + ' ,' + player['nickname'] + ' ,' + game['status']
     else:
         return 'Already started'
 
