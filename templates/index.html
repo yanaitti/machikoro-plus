@@ -389,7 +389,7 @@
       $('#next_player').click(function() {
         $('#message').empty();
         var path = gId + '/next'
-        if($('#buy_landmark').prop('disabled')){
+        if(!$('#buy_landmark').prop('disabled') && !$('#buy_facility').prop('disabled')){
           path = path + '/1'
         }
         $.ajax(path,
