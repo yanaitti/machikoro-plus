@@ -305,7 +305,7 @@ def buy_landmark(gameid, playerid, landmarkid):
     if landmarkid == 0:
         player['dices'] = 2
 
-    if len([landmark for landmark in player['landmarks'] if landmark['turn']]) == 4:
+    if len([landmark for landmark in player['landmarks'] if landmark['turn']]) == len(player['landmarks']):
         game['status'] = 'end'
 
     cache.set(gameid, game)
