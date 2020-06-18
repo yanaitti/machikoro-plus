@@ -282,6 +282,7 @@ def buy_card(gameid, playerid, facilityid):
         boardcard = [_boardcard for _boardcard in boardcards if _boardcard['name'] == mastercard['name']][0]
         boardcard['cnt'] += 1
 
+    player['facilities'].sort(key=lambda x: x['name'])
     game['boardcards'] = boardcards
     game['stocks'] = stocks
 
