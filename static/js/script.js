@@ -339,7 +339,7 @@ var status_check = function(gId, cId){
             _player = data.turns[pIdx];
 
             var rowtable = $('<tr></tr>').appendTo($('#playerinformation'));
-            $('<td colspan="2"> Name:' + _player.nickname + ' / Coin:' + _player.coins + '</td>').appendTo(rowtable);
+            $('<td> Name:' + _player.nickname + ' / Coin:' + _player.coins + '</td>').appendTo(rowtable);
 
             // landmarks
             var rowtable = $('<tr></tr>').appendTo($('#playerinformation'));
