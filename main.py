@@ -1,4 +1,4 @@
-from flask import Flask, Response, render_template
+from flask import Flask, Response, render_template, url_for
 from flask_caching import Cache
 import uuid
 import random
@@ -11,6 +11,34 @@ from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
+
+
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.get('filename', None)
+        if filename:
+            file_path = os.path.join(app.root_path,
+                                     endpoint, filename)
+            values['q'] = int(os.stat(file_path).st_mtime)
+    return url_for(endpoint, **values)
+
+
+@app.after_request
+def add_header(r):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers['Cache-Control'] = 'public, max-age=0'
+    return r
 
 
 # Cacheインスタンスの作成
@@ -33,6 +61,9 @@ type
     3: 誰でも
 cost コイン数
 score 出目
+
+bug:
+ビジネスセンターが動かない（エラーが出た）
 '''
 
 mastercards = [
@@ -56,8 +87,8 @@ mastercards = [
     {'name': '青果市場', 'type': 1, 'cost': 2, 'score': '11-12', 'stock': 6, 'get': 2, 'style': '市場', 'pack': 0, 'available': True},
 
     {'name': 'スタジアム', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 2, 'style': 'ランドマーク', 'pack': 0, 'available': True},
-    {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0, 'available': True},
-    {'name': 'ビジネスセンター', 'type': 1, 'cost': 1, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0, 'available': True},
+    {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0, 'available': False},
+    {'name': 'ビジネスセンター', 'type': 1, 'cost': 1, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0, 'available': False},
 
 ## 街コロ＋（プラス）
     {'name': '役所', 'type': 0, 'cost':0, 'style': 'ランドマーク', 'pack': 1, 'available': True},
@@ -238,6 +269,7 @@ def start_game(gameid, ext=''):
 
         player['facilities'].append(_mastercards[4])
         player['facilities'].append(_mastercards[5])
+        player['facilities'].sort(key=lambda x: (x['score'], x['name']))
         player['coins'] = 3
 
         for mastercard in _mastercards:
@@ -249,6 +281,7 @@ def start_game(gameid, ext=''):
     # game['mastercards'] = _mastercards
     game['stocks'] = stocks
     game['boardcards'] = boardcards
+    game['turns'] = game['players']
 
     cache.set(gameid, game)
     return 'ok'
@@ -282,7 +315,7 @@ def buy_card(gameid, playerid, facilityid):
         boardcard = [_boardcard for _boardcard in boardcards if _boardcard['name'] == mastercard['name']][0]
         boardcard['cnt'] += 1
 
-    player['facilities'].sort(key=lambda x: x['name'])
+    player['facilities'].sort(key=lambda x: (x['score'], x['name']))
     game['boardcards'] = boardcards
     game['stocks'] = stocks
 
@@ -536,12 +569,24 @@ def judgement_dice(gameid, dice):
 def next_player(gameid, nobuy=0):
     game = cache.get(gameid)
 
+    _player = game['players'][0]
+
+    # 空港の効果
     if game['pack'] == 1:
         if nobuy == 1:
-            player = game['players'][0]
-            landmark = [landmark for landmark in player['landmarks'] if landmark['name'] == '空港'][0]
+            landmark = [landmark for landmark in _player['landmarks'] if landmark['name'] == '空港'][0]
             if landmark['turn'] == True:
                 game['players'][0]['coins'] += 10
+
+    # 遊園地の効果
+    if len(game['dice']) > 1:
+        if game['dice'][0] == game['dice'][1]:
+            landmark = [landmark for landmark in _player['landmarks'] if landmark['name'] == '遊園地'][0]
+            if landmark['turn'] == True:
+                game['dice'] = []
+
+                cache.set(gameid, game)
+                return 'ok'
 
     game['players'] = np.roll(np.array(game['players']), -1).tolist()
     game['dice'] = []

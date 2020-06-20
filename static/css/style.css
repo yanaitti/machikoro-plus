@@ -1,0 +1,9 @@
+/*CSSの記述*/
+ul.nav  {
+    display:table;
+}
+ul.nav li{
+    display:table-cell;
+    vertical-align:middle;
+    text-align:center;
+}
