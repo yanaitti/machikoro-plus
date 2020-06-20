@@ -7,6 +7,7 @@ import json
 import os
 import copy
 import numpy as np
+import math
 from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
@@ -102,10 +103,10 @@ mastercards = [
     {'name': 'バーガーショップ', 'type': 2, 'cost': 1, 'score': '8', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 1, 'available': True},
     {'name': 'サンマ漁船', 'type': 3, 'cost': 2, 'score': '8', 'stock': 6, 'get': 3, 'style': '漁船', 'pack': 1, 'available': True},
     {'name': '食品倉庫', 'type': 1, 'cost': 2, 'score': '12-13', 'stock': 6, 'get': 2, 'style': '工場', 'pack': 1, 'available': True},
-    {'name': 'マグロ漁船', 'type': 3, 'cost': 5, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '漁船', 'pack': 1, 'available': False},
+    {'name': 'マグロ漁船', 'type': 3, 'cost': 5, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '漁船', 'pack': 1, 'available': True},
 
-    {'name': '出版社', 'type': 1, 'cost': 5, 'score': '7', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 1, 'available': False},
-    {'name': '税務署', 'type': 1, 'cost': 4, 'score': '8-9', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 1, 'available': False},
+    {'name': '出版社', 'type': 1, 'cost': 5, 'score': '7', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 1, 'available': True},
+    {'name': '税務署', 'type': 1, 'cost': 4, 'score': '8-9', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 1, 'available': True},
 
 ## 街コロシャープ
     {'name': '雑貨屋', 'type': 2, 'cost': 0, 'score': '2', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 2, 'available': True},
@@ -260,7 +261,6 @@ def start_game(gameid, ext=''):
                 c_mastercard = copy.deepcopy(mastercard)
                 c_mastercard['cnt'] = mastercard['stock']
                 boardcards.append(c_mastercard)
-                # boardcards.append({'name': mastercard['name'], 'cnt': mastercard['stock'], 'cost': mastercard['cost'], 'score': mastercard['score'], 'style': mastercard['style']})
 
     # initialize for each players
     for player in game['players']:
@@ -523,6 +523,30 @@ def judgement_dice(gameid, dice):
         elif card['name'] == '雑貨屋':
             if len([_card for _card in player['landmarks'] if _card['turn'] == True]) < 2:
                 player['coins'] += diff
+        elif card['name'] == '出版社':
+            if len(scores) == 1:
+                if dice == scores[0]:
+                    for pIdx, _player in enumerate(game['players']):
+                        tmp_coin = 0
+                        if _player['playerid'] != player['playerid']:
+                            getcoin = len([_card for _card in _player['facilities'] if _card['style'] in ['飲食店', '商店']])
+                            tmp_coin = getcoin if _player['coins'] > getcoin else _player['coins']
+                            _player['coins'] -= tmp_coin
+                            player['coins'] += tmp_coin
+                            results[pIdx] -= tmp_coin
+                            diff += tmp_coin
+        elif card['name'] == '税務署':
+            if len(scores) == 2:
+                if scores[0] <= dice <= scores[1]:
+                    for pIdx, _player in enumerate(game['players']):
+                        if _player['playerid'] != player['playerid']:
+                            getcoin = 0
+                            if _player['coins'] >= 10:
+                                getcoin = math.floor(_player['coins'] / 2);
+                            _player['coins'] -= getcoin
+                            player['coins'] += getcoin
+                            results[pIdx] -= getcoin
+                            diff += getcoin
         else:
             player['coins'] += diff
 
