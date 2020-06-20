@@ -1,9 +1,10 @@
 /*CSSの記述*/
 ul.nav  {
-    display:table;
+  padding: 0px;
+  display:table;
 }
 ul.nav li{
-    display:table-cell;
-    vertical-align:middle;
-    text-align:center;
+  display:table-cell;
+  vertical-align:middle;
+  text-align:center;
 }
