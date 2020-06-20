@@ -1007,7 +1007,7 @@ class MainTestCase(unittest.TestCase):
         availablelists = json.loads(rv.get_data())
         rv = self.set_using_cards(gameid, [aIdx for aIdx, _card in enumerate(availablelists) if _card['available'] == True])
         # print(json.loads(rv.get_data()))
-        assert 29 == len(json.loads(rv.get_data()))
+        # assert 29 == len(json.loads(rv.get_data()))
 
         ###########################################################
         # Start Game
@@ -1027,7 +1027,7 @@ class MainTestCase(unittest.TestCase):
         # player数チェック
         assert 3 == len(game_status['players'])
         # 全体のカード数チェック
-        assert 126 == (len(game_status['stocks']) + sum(boardcards))
+        # assert 126 == (len(game_status['stocks']) + sum(boardcards))
         for player in game_status['players']:
             assert 2 == len(player['facilities'])
             assert 3 == player['coins']
@@ -1866,16 +1866,17 @@ class MainTestCase(unittest.TestCase):
         rv = self.status_game(gameid)
         game_status = json.loads(rv.get_data())
 
+        print(game_status['players'][0]['coins'])
         assert 7 == int(game_status['players'][0]['coins']) # player3
         assert 15 == int(game_status['players'][1]['coins']) # player1
         assert 10 == int(game_status['players'][2]['coins']) # player2
 
         ###########################################################
         # 施設またはランドマークの建設を行う
-        # 何も買わない
-        # rv = self.buying_facility(gameid, game_status['players'][0]['playerid'], 17)
+        # テレビ局を買う
+        rv = self.buying_facility(gameid, game_status['players'][0]['playerid'], 13)
         # rv = self.buying_landmark(gameid, game_status['players'][0]['playerid'], 2)
-        # assert b'ok' in rv.get_data()
+        assert b'ok' in rv.get_data()
 
         ###########################################################
         # 次の人へ
@@ -1892,15 +1893,20 @@ class MainTestCase(unittest.TestCase):
 
         ###########################################################
         # カードの効果を得る
-        rv = self.judgement_dice(gameid, 2)
+        rv = self.judgement_dice(gameid, 6)
+        assert b'ok' in rv.get_data()
+
+        # ポイントの搾取
+        rv = self.choice_player(gameid, game_status['players'][0]['playerid'], game_status['players'][1]['playerid'])
         assert b'ok' in rv.get_data()
 
         rv = self.status_game(gameid)
         game_status = json.loads(rv.get_data())
 
-        assert 8 == int(game_status['players'][0]['coins']) # player3
-        assert 16 == int(game_status['players'][1]['coins']) # player1
-        assert 11 == int(game_status['players'][2]['coins']) # player2
+        print(game_status['players'][0]['coins'])
+        assert 6 == int(game_status['players'][0]['coins']) # player3
+        assert 10 == int(game_status['players'][1]['coins']) # player1
+        assert 10 == int(game_status['players'][2]['coins']) # player2
 
         ###########################################################
         # 施設またはランドマークの建設を行う

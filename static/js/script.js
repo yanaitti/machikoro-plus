@@ -239,6 +239,7 @@ $(function() {
       }
     )
     .done(function(data) {
+      $('#sec4').hide();
     })
     .fail(function() {
       $('#message').text('エラーが発生しました');
@@ -254,6 +255,7 @@ $(function() {
       }
     )
     .done(function(data) {
+      $('#sec5').hide();
     })
     .fail(function() {
       $('#message').text('エラーが発生しました');

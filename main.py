@@ -87,8 +87,8 @@ mastercards = [
     {'name': '青果市場', 'type': 1, 'cost': 2, 'score': '11-12', 'stock': 6, 'get': 2, 'style': '市場', 'pack': 0, 'available': True},
 
     {'name': 'スタジアム', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 2, 'style': 'ランドマーク', 'pack': 0, 'available': True},
-    {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0, 'available': False},
-    {'name': 'ビジネスセンター', 'type': 1, 'cost': 1, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0, 'available': False},
+    {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0, 'available': True},
+    {'name': 'ビジネスセンター', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0, 'available': True},
 
 ## 街コロ＋（プラス）
     {'name': '役所', 'type': 0, 'cost':0, 'style': 'ランドマーク', 'pack': 1, 'available': True},
@@ -378,6 +378,9 @@ def trade_card(gameid, playerid, toplayerid, cardnum, tocardnum):
     player['facilities'].append(tofacility)
     toplayer['facilities'].append(facility)
 
+    player['facilities'].sort(key=lambda x: (x['score'], x['name']))
+    toplayer['facilities'].sort(key=lambda x: (x['score'], x['name']))
+
     cache.set(gameid, game)
     return 'ok'
 
@@ -510,11 +513,13 @@ def judgement_dice(gameid, dice):
         elif card['name'] == 'テレビ局':
             # 効果：（自分のターン）任意のプレイヤーから５コインもらう
             diff = 0
-            retCd.append('choicePlayer')
+            if dice == scores[0]:
+                retCd.append('choicePlayer')
         elif card['name'] == 'ビジネスセンター':
             # 効果：（自分のターン）大施設以外の施設１軒を他プレイヤーと交換できる
             diff = 0
-            retCd.append('tradeCard')
+            if dice == scores[0]:
+                retCd.append('tradeCard')
         elif card['name'] == '雑貨屋':
             if len([_card for _card in player['landmarks'] if _card['turn'] == True]) < 2:
                 player['coins'] += diff
