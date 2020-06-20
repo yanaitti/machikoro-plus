@@ -103,7 +103,7 @@ mastercards = [
     {'name': 'バーガーショップ', 'type': 2, 'cost': 1, 'score': '8', 'stock': 6, 'get': 1, 'style': '飲食店', 'pack': 1, 'available': True},
     {'name': 'サンマ漁船', 'type': 3, 'cost': 2, 'score': '8', 'stock': 6, 'get': 3, 'style': '漁船', 'pack': 1, 'available': True},
     {'name': '食品倉庫', 'type': 1, 'cost': 2, 'score': '12-13', 'stock': 6, 'get': 2, 'style': '工場', 'pack': 1, 'available': True},
-    {'name': 'マグロ漁船', 'type': 3, 'cost': 5, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '漁船', 'pack': 1, 'available': True},
+    {'name': 'マグロ漁船', 'type': 3, 'cost': 5, 'score': '12-14', 'stock': 6, 'get': 0, 'style': '漁船', 'pack': 1, 'available': False},
 
     {'name': '出版社', 'type': 1, 'cost': 5, 'score': '7', 'stock': 4, 'get': 1, 'style': 'ランドマーク', 'pack': 1, 'available': True},
     {'name': '税務署', 'type': 1, 'cost': 4, 'score': '8-9', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 1, 'available': True},
