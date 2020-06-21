@@ -207,6 +207,23 @@ $(function() {
     });
   });
 
+  // roll the dice with maguro gyosen
+  $('#roll_dice2').click(function() {
+    $('#message').empty();
+    $.getJSON(gId + '/roll2',
+      {
+        type: 'get',
+      }
+    )
+    .done(function(data) {
+      $('#dice2').text(data);
+      $('#roll_dice2').prop('disabled', true);
+    })
+    .fail(function() {
+      $('#message').text('エラーが発生しました');
+    });
+  });
+
   // judgement
   $('#judgement').click(function() {
     $('#message').empty();
@@ -223,6 +240,9 @@ $(function() {
       }
       if($.inArray('tradeCard', data) > 0){
         $('#sec4').show();
+      }
+      if($.inArray('dice_roll', data) > 0){
+        $('#sec6').show();
       }
     })
     .fail(function() {
@@ -287,6 +307,7 @@ $(function() {
       $('#buy_landmark').prop("disabled", false);
       $('#roll_dice').prop("disabled", false);
       $('#judgement').prop("disabled", false);
+      $('#roll_dice2').prop('disabled', false);
       $('#message').text('次に移動しました');
     })
     .fail(function() {
@@ -330,6 +351,7 @@ var status_check = function(gId, cId){
             $('#sec3').hide();
             $('#sec4').hide();
             $('#sec5').hide();
+            $('#sec6').hide();
           }
 
           console.log('cId:' + cId)

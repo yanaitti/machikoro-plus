@@ -41,6 +41,9 @@ class MainTestCase(unittest.TestCase):
     def roll_dice(self, gameid, rollcnt):
         return self.app.get(gameid + '/roll/' + str(rollcnt), follow_redirects=True)
 
+    def roll_dice2(self, gameid):
+        return self.app.get(gameid + '/roll2', follow_redirects=True)
+
     def judgement_dice(self, gameid, dice):
         return self.app.get(gameid + '/judgement/' + str(dice), follow_redirects=True)
 
@@ -2109,9 +2112,82 @@ class MainTestCase(unittest.TestCase):
 
         ###########################################################
         # 施設またはランドマークの建設を行う
-        # 何も買わない
+        # 港を買う
         # rv = self.buying_facility(gameid, game_status['players'][0]['playerid'], 24)
-        # rv = self.buying_landmark(gameid, game_status['players'][0]['playerid'], 2)
+        rv = self.buying_landmark(gameid, game_status['players'][0]['playerid'], 5)
+        # assert b'ok' in rv.get_data()
+
+        ###########################################################
+        # 次の人へ
+        rv = self.next_game(gameid)
+        assert b'ok' in rv.get_data()
+
+        rv = self.status_game(gameid)
+        game_status = json.loads(rv.get_data())
+
+        ####################################################
+        self.trun_status(game_status, 32)
+        ####################################################
+
+        ###########################################################
+        # カードの効果を得る
+        rv = self.judgement_dice(gameid, 7)
+        assert b'ok' in rv.get_data()
+
+        rv = self.status_game(gameid)
+        game_status = json.loads(rv.get_data())
+
+        # print(game_status['players'][0]['coins'])
+        # print(game_status['players'][1]['coins'])
+        # print(game_status['players'][2]['coins'])
+        assert 15 == int(game_status['players'][0]['coins']) # player1
+        assert 3 == int(game_status['players'][1]['coins']) # player2
+        assert 9 == int(game_status['players'][2]['coins']) # player3
+
+        ###########################################################
+        # 施設またはランドマークの建設を行う
+        # マグロ漁船を買う
+        rv = self.buying_facility(gameid, game_status['players'][0]['playerid'], 22)
+        # rv = self.buying_landmark(gameid, game_status['players'][0]['playerid'], 5)
+        # assert b'ok' in rv.get_data()
+
+        ###########################################################
+        # 次の人へ
+        rv = self.next_game(gameid)
+        assert b'ok' in rv.get_data()
+
+        rv = self.status_game(gameid)
+        game_status = json.loads(rv.get_data())
+
+        ####################################################
+        self.trun_status(game_status, 33)
+        ####################################################
+
+        ###########################################################
+        # カードの効果を得る
+        rv = self.judgement_dice(gameid, 14)
+        assert 'dice_roll' in json.loads(rv.get_data())
+
+        rv = self.roll_dice2(gameid)
+        dice = json.loads(rv.get_data())
+        print(dice)
+
+        rv = self.status_game(gameid)
+        game_status = json.loads(rv.get_data())
+
+        # print(rv.get_data().decode())
+        # print(game_status['players'][0]['coins'])
+        # print(game_status['players'][1]['coins'])
+        # print(game_status['players'][2]['coins'])
+        assert 3 == int(game_status['players'][0]['coins']) # player2
+        assert 9 == int(game_status['players'][1]['coins']) # player3
+        assert 20 == int(game_status['players'][2]['coins']) # player1
+
+        ###########################################################
+        # 施設またはランドマークの建設を行う
+        # 何も買わない
+        # rv = self.buying_facility(gameid, game_status['players'][0]['playerid'], 22)
+        # rv = self.buying_landmark(gameid, game_status['players'][0]['playerid'], 5)
         # assert b'ok' in rv.get_data()
 
         ###########################################################
