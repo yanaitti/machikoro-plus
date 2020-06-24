@@ -369,7 +369,8 @@ var status_check = function(gId, cId){
             var rowul = $('<ul class="nav"></ul>').appendTo(coltable);
             for(var pIdx in _player.landmarks){
               landmark = _player.landmarks[pIdx]
-              $('<li>' + landmark.name + '<br/>=' + landmark.cost + '=<br/>&lt;' + (landmark.turn == true? '建設済み':'工事中') + '&gt;</li>').appendTo(rowul);
+              $('<li>' + landmark.name + '<br/>=' + landmark.cost + '=<br/>&lt;' + (landmark.turn == true? '〇':'×') + '&gt;</li>').appendTo(rowul);
+              // $('<li>' + landmark.name + '<br/>=' + landmark.cost + '=<br/>&lt;' + (landmark.turn == true? '建設済み':'工事中') + '&gt;</li>').appendTo(rowul);
               // $('<li></li>').appendTo(rowul);
             }
 
