@@ -303,6 +303,8 @@ $(function() {
     )
     .done(function(data) {
       // console.log(data)
+      $('#hide_dice').val('0');
+      $('#plus2').prop("disabled", true);
       $('#buy_facility').prop("disabled", false);
       $('#buy_landmark').prop("disabled", false);
       $('#roll_dice').prop("disabled", false);
@@ -427,14 +429,6 @@ var status_check = function(gId, cId){
             for(var gIdx in data.boardcards){
               $('#sel_buy_facility').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
             }
-            $('#sel_card1').children().remove();
-            $('#sel_card2').children().remove();
-            for(var gIdx in data.boardcards){
-              if(data.boardcards[gIdx].style != 'ランドマーク'){
-                $('#sel_card1').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
-                $('#sel_card2').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
-              }
-            }
           }
 
           if(_player.landmarks.length != $('#sel_buy_landmark').children('option').length){
@@ -442,6 +436,17 @@ var status_check = function(gId, cId){
             for(var pIdx in _player.landmarks){
               landmark = _player.landmarks[pIdx]
               $('#sel_buy_landmark').append('<option value="'+pIdx+'">' + landmark.name + '</option>');
+            }
+          }
+
+          if(data.boardcards.length != $('#sel_card1').children('option').length){
+            $('#sel_card1').children().remove();
+            $('#sel_card2').children().remove();
+            for(var gIdx in data.boardcards){
+              if(data.boardcards[gIdx].style != 'ランドマーク'){
+                $('#sel_card1').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
+                $('#sel_card2').append('<option value="'+gIdx+'">' + data.boardcards[gIdx].name + '</option>');
+              }
             }
           }
 
@@ -461,7 +466,8 @@ var status_check = function(gId, cId){
               }
             }
           }
-          if((Number($('#hide_dice').val()) > 10)&&(data.pack == 1)){
+
+          if((Number($('#hide_dice').val()) >= 10)&&(data.pack == 1)){
             if(data.players[playerPos].landmarks[5].turn == true){
               $('#plus2').prop("disabled", false);
             }

@@ -63,8 +63,7 @@ type
 cost コイン数
 score 出目
 
-bug:
-ビジネスセンターが動かない（エラーが出た）
+# BUG: ビジネスセンターは実装が足りないのでDisable
 '''
 
 mastercards = [
@@ -89,7 +88,7 @@ mastercards = [
 
     {'name': 'スタジアム', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 2, 'style': 'ランドマーク', 'pack': 0, 'available': True},
     {'name': 'テレビ局', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 5, 'style': 'ランドマーク', 'pack': 0, 'available': True},
-    {'name': 'ビジネスセンター', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0, 'available': True},
+    {'name': 'ビジネスセンター', 'type': 1, 'cost': 6, 'score': '6', 'stock': 4, 'get': 0, 'style': 'ランドマーク', 'pack': 0, 'available': False},
 
 ## 街コロ＋（プラス）
     {'name': '役所', 'type': 0, 'cost':0, 'style': 'ランドマーク', 'pack': 1, 'available': True},
