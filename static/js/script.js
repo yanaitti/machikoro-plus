@@ -5,10 +5,20 @@ $(function() {
   var gId = '';
   var cId = '';
 
+  $('#clickCopy').click(function(){
+    var text = $('#uriWgId').val();
+    var clipboard = $('<textarea></textarea>');
+    clipboard.text(text);
+    $('body').append(clipboard);
+    clipboard.select();
+    document.execCommand('copy');
+    clipboard.remove();
+  });
+
   // Create Game
   $('#createGame').click(function() {
     $('#message').empty();
-    $.ajax('create' + '/' + $('#cName_inp').val(),
+    $.ajax('/create' + '/' + $('#cName_inp').val(),
       {
         type: 'get',
       }
@@ -20,6 +30,7 @@ $(function() {
       $('#cId').text(data);
       $('#cName').text($('#cName_inp').val());
       $('#gStatus').text('waiting');
+      $('#uriWgId').val(location.href + data + '/join');
       gId = data;
       cId = data;
       $('#sec1').show();
@@ -33,7 +44,7 @@ $(function() {
   // Join Game
   $('#joinGame').click(function() {
     $('#message').empty();
-    $.ajax($('#gId_inp').val() + '/join/' + $('#cName_inp').val(),
+    $.ajax('/' + $('#gId_inp').val() + '/join/' + $('#cName_inp').val(),
       {
         type: 'get',
       }
@@ -57,7 +68,7 @@ $(function() {
   // <通常ルール>
   $('#startGame1').click(function() {
     $('#message').empty();
-    $.ajax(gId + '/start',
+    $.ajax('/' + gId + '/start',
       {
         type: 'get',
       }
@@ -72,7 +83,7 @@ $(function() {
   // <拡張ルール>
   $('#startGame2').click(function() {
     $('#message').empty();
-    $.ajax(gId + '/start/ext',
+    $.ajax('/' + gId + '/start/ext',
       {
         type: 'get',
       }
@@ -87,7 +98,7 @@ $(function() {
   // 街コロの有効カード取得
   $('#getAvailableCards1').click(function() {
     $('#message').empty();
-    $.getJSON(gId + '/availablelists/0',
+    $.getJSON('/' + gId + '/availablelists/0',
       {
         type: 'get',
       }
@@ -111,7 +122,7 @@ $(function() {
   // 街コロ＋の有効カード取得
   $('#getAvailableCards2').click(function() {
     $('#message').empty();
-    $.getJSON(gId + '/availablelists/1',
+    $.getJSON('/' + gId + '/availablelists/1',
       {
         type: 'get',
       }
@@ -138,7 +149,7 @@ $(function() {
     var selCards = [];
     $('input[name="cards[]"]:checked').each(function(){selCards.push($(this).val());});
     console.log(selCards);
-    $.getJSON(gId + '/setup/' + selCards,
+    $.getJSON('/' + gId + '/setup/' + selCards,
       {
         type: 'get',
       }
@@ -157,7 +168,7 @@ $(function() {
   // 施設の購入
   $('#buy_facility').click(function() {
     $('#message').empty();
-    $.ajax(gId + '/' + cId + '/buy/facility/' + $('#sel_buy_facility').val(),
+    $.ajax('/' + gId + '/' + cId + '/buy/facility/' + $('#sel_buy_facility').val(),
       {
         type: 'get',
       }
@@ -174,7 +185,7 @@ $(function() {
   // ランドマークの購入
   $('#buy_landmark').click(function() {
     $('#message').empty();
-    $.ajax(gId + '/' + cId + '/buy/landmark/' + $('#sel_buy_landmark').val(),
+    $.ajax('/' + gId + '/' + cId + '/buy/landmark/' + $('#sel_buy_landmark').val(),
       {
         type: 'get',
       }
@@ -191,7 +202,7 @@ $(function() {
   // roll the dice
   $('#roll_dice').click(function() {
     $('#message').empty();
-    $.getJSON(gId + '/roll/' + $('input[name="choice_dice"]:checked').val(),
+    $.getJSON('/' + gId + '/roll/' + $('input[name="choice_dice"]:checked').val(),
       {
         type: 'get',
       }
@@ -210,7 +221,7 @@ $(function() {
   // roll the dice with maguro gyosen
   $('#roll_dice2').click(function() {
     $('#message').empty();
-    $.getJSON(gId + '/roll2',
+    $.getJSON('/' + gId + '/roll2',
       {
         type: 'get',
       }
@@ -227,7 +238,7 @@ $(function() {
   // judgement
   $('#judgement').click(function() {
     $('#message').empty();
-    $.getJSON(gId + '/judgement/' + $('#hide_dice').val(),
+    $.getJSON('/' + gId + '/judgement/' + $('#hide_dice').val(),
       {
         type: 'get',
       }
@@ -253,7 +264,7 @@ $(function() {
   // trade_card
   $('#trade_card').click(function() {
     $('#message').empty();
-    $.ajax(gId + '/' + cId + '/trade/' + $('#sel_player2').val() + '/' + $('#sel_card1').val() + '/' + $('#sel_card2').val(),
+    $.ajax('/' + gId + '/' + cId + '/trade/' + $('#sel_player2').val() + '/' + $('#sel_card1').val() + '/' + $('#sel_card2').val(),
       {
         type: 'get',
       }
@@ -269,7 +280,7 @@ $(function() {
   // get_point
   $('#get_point').click(function() {
     $('#message').empty();
-    $.ajax(gId + '/' + cId + '/choice/' + $('#sel_player2').val(),
+    $.ajax('/' + gId + '/' + cId + '/choice/' + $('#sel_player2').val(),
       {
         type: 'get',
       }
@@ -292,7 +303,7 @@ $(function() {
   // Next player
   $('#next_player').click(function() {
     $('#message').empty();
-    var path = gId + '/next'
+    var path = '/' + gId + '/next'
     if(!$('#buy_landmark').prop('disabled') && !$('#buy_facility').prop('disabled')){
       path = path + '/1'
     }
@@ -322,7 +333,7 @@ var status_check = function(gId, cId){
   setTimeout(function(){
     $('#message').empty();
     // all status
-    $.getJSON(gId + '/status',
+    $.getJSON('/' + gId + '/status',
       {
         type: 'get',
       }
